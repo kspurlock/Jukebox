@@ -1,0 +1,115 @@
+@charset "utf-8";
+/* CSS Document */
+
+a {color: white;}
+
+ul {list-style: none;}
+
+ul.userlist {
+    margin: 8px 8px 8px 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+body {
+	background-color: #111111;
+	color:white;
+	font-family:Arial, serif;
+	text-transform:none;
+	border:0;
+	margin:0;
+	padding:0;
+	line-height:1.6;
+	box-sizing: border-box;
+}
+
+:root {
+	--left-sidebar-item-height: 32px;
+	--left-sidebar-padding-left: 24px;
+	--left-sidebar-padding-right: 24px;
+}
+
+.main {
+	display: grid;
+	grid-template-areas:
+		"side con"
+		"bot bot";
+	grid-template-columns: 210px 1fr;
+	grid-template-rows: 1fr auto;
+	height:100%;
+	min-height:100%;
+	position: fixed;
+	width:100%;
+}
+
+.sidebar {
+	width: 210px;
+	height: 100%;
+	grid-area: side;
+	padding-bottom: 100%;
+	background: rgb(2,0,36);
+	background: linear-gradient(180deg, #fc3682 0%, #111 23%);
+}
+.content {
+	background-color: #222222;
+	width: 100%;
+	height: 100%;
+	grid-area: con;
+}
+.bottombar {
+	background-color: #333333;
+	width: 100%;
+	grid-area: bot;
+}
+
+.jukelogo {
+	width: 160px;
+	margin: 30px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
+}
+.buttons {
+	padding: 0 8px;
+}
+
+.header {
+	/* height: 15px; */
+	margin: 8px var(--left-sidebar-padding-right) 8px var(--left-sidebar-padding-left);
+}
+
+.buttonlabel {
+	align-items: center;
+	display:flex;
+	height: 40px;
+	padding: 0 16px;
+}
+
+.oneline {
+	text-overflow: ellipsis;
+}
+.linktext {
+	color:#fc8db8;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 16px;
+	text-decoration: none;
+	transition-duration: .2s;
+}
+.linktext:hover {
+	color: #fc3682;
+}
+.divider {
+	position: relative;
+	background-color: #282828;
+	border: none;
+	height: 1px;
+	margin: 8px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
+	min-height: 1px;
+}
+.userlist {
+	border-radius: 4px;
+	margin-left: 0px;
+}
+.usertext {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+}
