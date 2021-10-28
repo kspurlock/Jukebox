@@ -44,10 +44,7 @@ body {
 
 .sidebar {
 	width: 210px;
-	height: 100%;
 	grid-area: side;
-	padding-bottom: 100%;
-	background: rgb(2,0,36);
 	background: linear-gradient(180deg, #fc3682 0%, #111 23%);
 }
 .content {
@@ -112,4 +109,14 @@ body {
 	font-size: 14px;
 	font-weight: 400;
 	line-height: 20px;
+}
+
+.queuebanner {
+    padding-left: 40px;
+    font-size: 60px;
+    margin: 0px;
+}
+
+.queue {
+    margin: 0px;
 }
