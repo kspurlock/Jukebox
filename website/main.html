@@ -46,7 +46,14 @@
 		<div class="content">
 			<h1 class="queuebanner">Your Queue</h1>
       <ul class="queue">
-        <li class="songs">
+        <li class="songs" style="grid-template-columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px,1fr);display: grid;">
+          <span class="queuenumber">#</span>
+          <span class="queuetitle">Title</span>
+          <span class="queueartist">Artist</span>
+          <span class="queuealbum">Album/YouTube URL</span>
+          <span class="queuelength">Time</span>
+        </li>
+        <li class="songs" style="grid-template-columns: [index] 16px [first] 6fr [var1] 4fr [var2] 3fr [last] minmax(120px,1fr);display: grid;">
           <span class="queuenumber">1</span>
           <span class="queuetitle">The Great Curve - 2005 Remaster</span>
           <span class="queueartist">Talking Heads</span>
