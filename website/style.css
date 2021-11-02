@@ -1,20 +1,23 @@
 @charset "utf-8";
 /* CSS Document */
 
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+
 a {color: white;}
 
 ul {list-style: none;}
 
 ul.userlist {
-    margin: 8px 8px 8px 8px;
-    padding-left: 16px;
-    padding-right: 16px;
+	margin: 8px 8px 8px 8px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 body {
 	background-color: #111111;
 	color:white;
-	font-family:Arial, serif;
+	font-family: Roboto, Arial, serif;
 	text-transform:none;
 	border:0;
 	margin:0;
@@ -83,22 +86,32 @@ body {
 	text-overflow: ellipsis;
 }
 .linktext {
-	color:#fc8db8;
+	color:#8dfcf0;
 	font-size: 14px;
-	font-weight: 700;
+	font-weight: 500;
 	line-height: 16px;
 	text-decoration: none;
 	transition-duration: .2s;
 }
 .linktext:hover {
-	color: #fc3682;
+	color: #36fce7;
+	font-weight: 700;
+	text-decoration: underline;
 }
-.divider {
+.sidedivider {
 	position: relative;
 	background-color: #282828;
 	border: none;
 	height: 1px;
 	margin: 8px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
+	min-height: 1px;
+}
+.listdivider {
+	position: relative;
+	background-color: #ffffff;
+	border: none;
+	height: 1px;
+	margin: 0 var(--left-sidebar-padding-right) 0 0;
 	min-height: 1px;
 }
 .userlist {
@@ -112,11 +125,49 @@ body {
 }
 
 .queuebanner {
-    padding-left: 40px;
-    font-size: 60px;
-    margin: 0px;
+	padding-left: 40px;
+	font-size: 4vw;
+	margin: 0px;
+	font-family: Pacifico, Arial, sans-serif;
+	font-weight: 500;
 }
 
 .queue {
-    margin: 0px;
+	margin: 0px;
+}
+
+.songgrid {
+	grid-template-columns: [num] 16px [title] 6fr [artist] 4fr [album] 3fr [time] 70px;
+	display: grid;
+	gap: 5px;
+	align-items: center;
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.queuenumber {
+	position: relative;
+	right: .25em;
+	font-family: 'Courier New';
+}
+
+.queuelength {
+	font-family: 'Courier New';
+}
+
+.queueinfo {
+	color: #999999;
+	font-style: italic;
+}
+
+a.youtubelink {
+	color: #fc8db8;
+	text-decoration: none;
+	transition-duration: .2s;
+}
+
+a.youtubelink:hover {
+	color: #fc3682;
+	font-weight: 700;
+	text-decoration: underline;
 }
