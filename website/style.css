@@ -3,6 +3,7 @@
 
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
 
 a {color: white;}
 
@@ -50,12 +51,14 @@ body {
 	grid-area: side;
 	background: linear-gradient(180deg, #fc3682 0%, #111 23%);
 }
+
 .content {
 	background-color: #222222;
 	width: 100%;
 	height: 100%;
 	grid-area: con;
 }
+
 .bottombar {
 	background-color: #333333;
 	width: 100%;
@@ -66,6 +69,7 @@ body {
 	width: 160px;
 	margin: 30px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
 }
+
 .buttons {
 	padding: 0 8px;
 }
@@ -82,9 +86,6 @@ body {
 	padding: 0 16px;
 }
 
-.oneline {
-	text-overflow: ellipsis;
-}
 .linktext {
 	color:#8dfcf0;
 	font-size: 14px;
@@ -93,11 +94,13 @@ body {
 	text-decoration: none;
 	transition-duration: .2s;
 }
+
 .linktext:hover {
 	color: #36fce7;
 	font-weight: 700;
 	text-decoration: underline;
 }
+
 .sidedivider {
 	position: relative;
 	background-color: #282828;
@@ -106,18 +109,21 @@ body {
 	margin: 8px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
 	min-height: 1px;
 }
+
 .listdivider {
 	position: relative;
-	background-color: #ffffff;
+	background-color: #999999;
 	border: none;
 	height: 1px;
-	margin: 0 var(--left-sidebar-padding-right) 0 0;
+	margin: 0 24px 10px 0;
 	min-height: 1px;
 }
+
 .userlist {
 	border-radius: 4px;
 	margin-left: 0px;
 }
+
 .usertext {
 	font-size: 14px;
 	font-weight: 400;
@@ -125,8 +131,9 @@ body {
 }
 
 .queuebanner {
-	padding-left: 40px;
-	font-size: 4vw;
+	padding-left: 24px;
+	padding-top: 16px;
+	font-size: 36px;
 	margin: 0px;
 	font-family: Pacifico, Arial, sans-serif;
 	font-weight: 500;
@@ -134,10 +141,11 @@ body {
 
 .queue {
 	margin: 0px;
+	padding-left: 24px;
 }
 
 .songgrid {
-	grid-template-columns: [num] 16px [title] 6fr [artist] 4fr [album] 3fr [time] 70px;
+	grid-template-columns: [num] 16px [image] 45px [title] 6fr [artist] 4fr [album] 3fr [time] 70px;
 	display: grid;
 	gap: 5px;
 	align-items: center;
@@ -147,12 +155,17 @@ body {
 
 .queuenumber {
 	position: relative;
-	right: .25em;
-	font-family: 'Courier New';
+	font-family: 'Roboto Mono';
+}
+
+.queueimage {
+	width: 40px;
+	padding: 0;
+	margin: 0;
 }
 
 .queuelength {
-	font-family: 'Courier New';
+	font-family: 'Roboto Mono';
 }
 
 .queueinfo {
@@ -170,4 +183,32 @@ a.youtubelink:hover {
 	color: #fc3682;
 	font-weight: 700;
 	text-decoration: underline;
+}
+
+.queuetitle {
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 6fr;
+    display: block;
+    overflow: hidden;
+}
+
+.queueartist {
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 4fr;
+    display: block;
+    overflow: hidden;
+}
+
+.queuealbum {
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 3fr;
+    display: block;
+    overflow: hidden;
+}
+
+.npimage {
+	width: 60px;
 }
