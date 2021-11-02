@@ -15,32 +15,32 @@
 			<ul class="buttons">
 				<li class="buttonlabel">
 					<a class="linktext" href="#">
-						<span class="oneline">Add songs</span>
+						<span class="oneline" id="add-songs">Add songs</span>
 					</a>
 				</li>
 				<li class="buttonlabel">
 					<a class="linktext" href="#">
-						<span class="oneline">Leave session</span>
+						<span class="oneline" id="leave-session">Leave session</span>
 					</a>
 				</li>
 			</ul>
 			<hr class="sidedivider">
 			<h3 class="header">Users</h3>
 			<ul class="userlist">
-				<li class="users">
-					<span class="user usertext">kianworld</span>
+				<li>
+					<span class="user usertext" id="user1">kianworld</span>
 				</li>
-				<li class="users">
-					<span class="user usertext">recespuffs</span>
+				<li>
+					<span class="user usertext" id="user2">recespuffs</span>
 				</li>
-				<li class="users">
-					<span class="user usertext">kyle</span>
+				<li>
+					<span class="user usertext" id="user3">kyle</span>
 				</li>
-				<li class="users">
-					<span class="user usertext">quack</span>
+				<li>
+					<span class="user usertext" id="user4">quack</span>
 				</li>
-				<li class="users">
-					<span class="user usertext">ye</span>
+				<li>
+					<span class="user usertext" id="user5">ye</span>
 				</li>
 			</ul>
 		</div>
@@ -123,14 +123,15 @@
 				</li>
 			</ul>
 			<a class="linktext" href="#">
-				<span>Play / Pause</span>
+				<span class="playandpause" id="playandpause">Play / Pause</span>
 			</a>
 			<a class="linktext" href="#">
-				<span>Voteskip</span>
+				<span class="voteskip" id="voteskip">Voteskip</span>
 			</a>
 			<a class="linktext" href="#">
-				<span>Forceskip</span>
+				<span class="forceskip" id="forceskip">Forceskip</span>
 			</a>
+			<!-- Need to add current session ID somewhere on page to users know how to join -->
 		</div>
 	</div>
 </body>
