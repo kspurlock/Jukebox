@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="../static/style.css">
 </head>
 
-<body>
+<body id="body_main">
 	<div class="main">
 		<div class="sidebar">
 			<div>
@@ -22,7 +22,7 @@
 					</a>
 				</li>
 				<li class="buttonlabel">
-					<a class="linktext" href="{{ url_for('home_page') }}">
+					<a class="linktext" href="{{ url_for('home_page') }}"> <!-- Absolute routing based on route method -->
 						<span class="oneline">Leave session</span>
 					</a>
 				</li>
@@ -30,6 +30,7 @@
 			<hr class="sidedivider">
 			<h3 class="header">Users</h3>
 			<ul class="userlist">
+				<!--
 				<li class="users">
 					<span class="usertext" id="user1">kianworld</span>
 					<span class="crown">👑&#xFE0E;</span>
@@ -54,6 +55,14 @@
 					<span class="usertext" id="user6">thereshouldbeausernamelimit</span>
 					<span class="kick"><a class="kick" href="#">❌&#xFE0E;</a></span>
 				</li>
+				-->
+				{% for user in users %} <!-- Example of Jenga2 template for Python injection -->
+					<li class="users">
+						<span class="usertext" id="user1">{{ user['name'] }}</span>
+					</li>
+				{% endfor %}
+
+
 			</ul>
 		</div>
 		<div class="content">
