@@ -27,12 +27,6 @@ body {
 	box-sizing: border-box;
 }
 
-:root {
-	--left-sidebar-item-height: 32px;
-	--left-sidebar-padding-left: 24px;
-	--left-sidebar-padding-right: 24px;
-}
-
 .main {
 	display: grid;
 	grid-template-areas:
@@ -49,7 +43,7 @@ body {
 .sidebar {
 	width: 210px;
 	grid-area: side;
-	background: linear-gradient(180deg, #fc3682 0%, #111 20%);
+	background: linear-gradient(180deg, #36fc5c 0%, #111 20%);
 }
 
 .content {
@@ -57,7 +51,7 @@ body {
 	width: 100%;
 	height: 100%;
 	grid-area: con;
-	background: linear-gradient(180deg, #36fc5c 0%, #222 20%);
+	background: linear-gradient(180deg, #fc3682 0%, #222 20%);
 }
 
 .bottombar {
@@ -68,25 +62,26 @@ body {
 
 .jukelogo {
 	width: 160px;
-	margin: 30px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
-}
-
-.buttons {
-	padding: 0 8px;
+	margin: 30px 24px 0 24px;
 }
 
 .header {
 	font-family: Pacifico, Arial, sans-serif;
 	font-weight: 500;
 	font-size: 24px;
-	margin: 8px var(--left-sidebar-padding-right) 8px var(--left-sidebar-padding-left);
+	margin: 8px 24px -8px 24px;
+}
+
+.buttons {
+	padding-left: 24px;
+	padding-right: 24px;
+	margin: 8px 0px 10px 0px;
 }
 
 .buttonlabel {
 	align-items: center;
-	display:flex;
+	display: flex;
 	height: 20px;
-	padding: 0 16px;
 }
 
 .linktext {
@@ -106,10 +101,10 @@ body {
 
 .sidedivider {
 	position: relative;
-	background-color: #999999;
+	background-color: #8dfcf0;
 	border: none;
 	height: 1px;
-	margin: 8px var(--left-sidebar-padding-right) 0 var(--left-sidebar-padding-left);
+	margin: 0 24px 0 24px;
 	min-height: 1px;
 }
 
@@ -124,13 +119,41 @@ body {
 
 .userlist {
 	border-radius: 4px;
-	margin-left: 0px;
+	margin: 0px;
+}
+
+.users {
+	display: grid;
+	grid-template-columns: [user] 1fr [kick] 10px;
+	margin: 0 5px 0 0;
 }
 
 .usertext {
 	font-size: 14px;
 	font-weight: 400;
-	line-height: 20px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
+}
+
+.kick .crown {
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.crown {
+	color: #fcd536;
+}
+
+.kick {
+	color:#111111;
+	text-decoration: none;
+	transition-duration: .2s;
+}
+
+.kick:hover {
+	color: #fc3682;
 }
 
 .queuebanner {
@@ -201,6 +224,10 @@ a.youtubelink:hover {
 
 .queueinfo {
 	color: #fcd536;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
 }
 
 .queuetitle {
