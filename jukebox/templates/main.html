@@ -17,12 +17,7 @@
 					<span class="oneline">Session ID: 65536</span>
 				</li>
 				<li class="buttonlabel">
-					<a class="linktext" href="#">
-						<span class="oneline" id="addsongs">Add songs</span>
-					</a>
-				</li>
-				<li class="buttonlabel">
-					<a class="linktext" href="home.html"> <!-- Absolute routing based on route method -->
+					<a class="linktext" href="{{url_for('home_page')}}"> <!-- Absolute routing based on route method -->
 						<span class="oneline" id="leavesession">Leave session</span>
 					</a>
 				</li>
@@ -66,7 +61,10 @@
 			</ul>
 		</div>
 		<div class="content">
-			<h1 class="queuebanner">Your Queue</h1>
+			<li class="contentheader">
+				<span class="queuebanner">Your Queue</span>
+				<span><input type="text" class="search" id="addsongs" placeholder="Add a song / YouTube URL..."></span>
+			</li>
 			<ul class="queue">
 				<li class="songs songgrid">
 					<span class="queueinfo queuenumber">#</span>
