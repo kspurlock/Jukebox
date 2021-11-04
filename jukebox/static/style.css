@@ -209,13 +209,6 @@ a.youtubelink:hover {
 	font-family: 'Roboto Mono';
 }
 
-.queueimage {
-	width: 40px;
-	padding: 0;
-	margin: 0;
-	grid-area: img;
-}
-
 .queuelength {
 	font-family: 'Roboto Mono';
 	position: relative;
@@ -228,6 +221,13 @@ a.youtubelink:hover {
 	text-overflow: ellipsis;
 	display: block;
 	overflow: hidden;
+}
+
+.queueimage {
+	width: 40px;
+	padding: 0;
+	margin: 0;
+	grid-area: img;
 }
 
 .queuetitle {
@@ -264,6 +264,50 @@ a.youtubelink:hover {
 	overflow: hidden;
 }
 
+.nowplaying {
+	display: grid;
+	grid-template-columns: [num] 1fr [controls] 2fr;
+	padding-left: 24px; 
+}
+
+.songsnp {
+	display: grid;
+	grid-template-areas:
+		"npimg nptit"
+		"npimg npart";
+		grid-template-columns: auto 1fr;
+		grid-template-rows: 35px 25px;
+	align-items: center;
+}
+
+.npimagespan {
+	grid-area: npimg;
+}
+
 .npimage {
 	width: 60px;
+	padding: 0;
+	margin: 0;
+}
+
+.nptitle {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
+	grid-area: nptit;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 18px;
+}
+
+.npartist {
+	font-size: 12px;
+	color: #b9b9b9;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
+	grid-area: npart;
+	padding-left: 10px;
 }
