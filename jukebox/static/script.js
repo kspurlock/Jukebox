@@ -1,12 +1,12 @@
 'use strict';
 
-// Assigning HTML elements to different variables
+// Code to Create Random Session ID
 
-const addSongs = document.getElementById('.add-songs');
-const leaveSession = document.getElementById('.leave-session');
-const playPause = document.getElementById(".playandpause");
-const voteSkip = document.getElementById(".voteskip");
-const forceSkip = document.getElementById(".forceskip");
+const createSession = document.getElementById('createsession');
+let randomID = Math.floor(Math.random() * (99999-10000+1) + 10000);
+createSession.innerHTML = `Session ID: ${randomID}`;
 
+const vetoButton = document.querySelector('vetobutton');
+const removeSong = document.getElementById('song1');
 
 

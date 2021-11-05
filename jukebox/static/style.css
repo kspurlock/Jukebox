@@ -226,6 +226,7 @@ a.youtubelink:hover {
 }
 
 .queueinfo {
+	position: relative;
 	color: #fcd536;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -369,4 +370,16 @@ a.youtubelink:hover {
 	overflow: hidden;
 	grid-area: npart;
 	padding-left: 10px;
+}
+
+.queuenumber:hover {
+	font-weight: 300;
+	color: #fc3682;
+	display: block;
+	opacity: 100;
+	overflow: hidden;
+	transition-duration: .2s;
+	position: relative;
+	text-align: right;
+	font-family: 'Roboto Mono';
 }

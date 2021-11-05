@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>Jukebox UI test</title>
 	<link rel="stylesheet" href="../static/style.css">
+	
 </head>
 
 <body id="body_main">
@@ -14,7 +15,7 @@
 			</div>
 			<ul class="buttons">
 				<li class="buttonlabel">
-					<span class="oneline">Session ID: 65536</span>
+					<span class="oneline" id="createsession"></span>
 				</li>
 				<li class="buttonlabel">
 					<a class="linktext" href="{{url_for('home_page')}}"> <!-- Absolute routing based on route method -->
@@ -64,14 +65,14 @@
 			<h1 class="queuebanner">Your Queue</h1>
 			<ul class="queue">
 				<li class="songs queuegrid">
-					<span class="queueinfo queuenumber">#</span>
+					<span class="queueinfo">#</span>
 					<span class="queueinfo">Title</span>
 					<span class="queueinfo">Album</span>
 					<span class="queueinfo">Queued by</span>
-					<span class="queueinfo queuelength">🕓&#xFE0E;</span>
+					<span class="queueinfo">🕓&#xFE0E;</span>
 				</li>
 				<hr class="queuedivider">
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song1">
 					<span class="queuenumber">1</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -82,7 +83,7 @@
 					<span class="queuedby">kianworld</span>
 					<span class="queuelength">6:27</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song2">
 					<span class="queuenumber">2</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -93,7 +94,7 @@
 					<span class="queuedby">recespuffs</span>
 					<span class="queuelength">3:32</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song3">
 					<span class="queuenumber">3</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/youtubeplaceholder.svg">
@@ -104,7 +105,7 @@
 					<span class="queuedby">kyle</span>
 					<span class="queuelength">4:44</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song4">
 					<span class="queuenumber">4</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -115,7 +116,7 @@
 					<span class="queuedby">kianworld</span>
 					<span class="queuelength">3:37</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song5">
 					<span class="queuenumber">5</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -126,7 +127,7 @@
 					<span class="queuedby">kianworld</span>
 					<span class="queuelength">3:37</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song6">
 					<span class="queuenumber">6</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -137,7 +138,7 @@
 					<span class="queuedby">kianworld</span>
 					<span class="queuelength">3:37</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song7">
 					<span class="queuenumber">7</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -148,7 +149,7 @@
 					<span class="queuedby">kianworld</span>
 					<span class="queuelength">3:37</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song8">
 					<span class="queuenumber">8</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -159,7 +160,7 @@
 					<span class="queuedby">kianworld</span>
 					<span class="queuelength">3:37</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song9">
 					<span class="queuenumber">9</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/youtubeplaceholder.svg">
@@ -170,7 +171,7 @@
 					<span class="queuedby">quack</span>
 					<span class="queuelength">4:44</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song10">
 					<span class="queuenumber">10</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -181,7 +182,7 @@
 					<span class="queuedby">ye</span>
 					<span class="queuelength">7:28</span>
 				</li>
-				<li class="songs queuegrid">
+				<li class="songs queuegrid" id="song11">
 					<span class="queuenumber">11</span>
 					<ul class="titleartist">
 						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
@@ -279,5 +280,6 @@
 			</ul>
 		</div>
 	</div>
+	<script src="{{url_for('static', filename = 'script.js')}}"></script>
 </body>
 </html>
