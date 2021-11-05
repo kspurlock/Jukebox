@@ -5,6 +5,8 @@
 @import url('https://fonts.googleapis.com/css?family=Pacifico&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
 
+/* CSS SPECIFICALLY MADE FOR PLAYER.HTML... can use on other pages though */
+
 a {color: white;}
 
 ul {list-style: none;}
@@ -382,4 +384,100 @@ a.youtubelink:hover {
 	position: relative;
 	text-align: right;
 	font-family: 'Roboto Mono';
+}
+
+/* HOME.HTML */
+
+.wrapper { /* background of homepage */
+	height: 100vh;
+	text-align: center;
+	background: linear-gradient(125deg, #fcd536 0%, #fc8db8 50%, #8dfcf0);
+}
+
+.jukehomelogo { /* scaling the logo SVG */
+	width: 300px;
+	margin: 30px 24px 0 24px;
+}
+
+.homebuttons {
+	padding: 0px;
+	margin-bottom: 10px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.sessionID {
+	background-color: #fff;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 300px;
+	height: 20px;
+	padding: 10px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+}
+
+.joinbutton {
+	background-color: #36fce7;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 97px;
+	height: 40px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+	cursor: pointer;
+}
+
+.createbutton {
+	background-color: #36fce7;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 420px;
+	height: 40px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+	cursor: pointer;
+}
+
+.spotifybutton {
+	background-color: #36fc5c;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 420px;
+	height: 40px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+	cursor: pointer;
+	font-weight: bold;
+	animation: begging 1s infinite;
+}
+
+@keyframes begging {
+	0% {
+	  background-color: #36fc5c;
+	}
+	50% {
+	  background-color: #83fc9a;
+	}
+	100% {
+	  background-color: #36fc5c;
+	}
+  }
+
+.usernamebutton {
+	background-color: #fff;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 400px;
+	height: 20px;
+	padding: 10px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
 }
