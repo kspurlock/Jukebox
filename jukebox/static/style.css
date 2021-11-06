@@ -7,54 +7,33 @@
 
 /* CSS SPECIFICALLY MADE FOR PLAYER.HTML... can use on other pages though */
 
-a {color: white;}
-
+/* Disables the dot that usually appears on lists */
 ul {list-style: none;}
 li {list-style: none;}
 
-ul.userlist {
-	margin: 8px 8px 8px 8px;
-	padding-left: 16px;
-	padding-right: 16px;
-}
-
-body {
+body { /* Basic stuff for every page */
 	background-color: #111111;
-	color:white;
+	color: white;
 	font-family: Roboto, Arial, serif;
-	text-transform:none;
-	border:0;
-	margin:0;
-	padding:0;
-	line-height:1.6;
+	text-transform: none;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	line-height: 1.6;
 	box-sizing: border-box;
 }
 
-.main {
+.main { /* Panels for the player page */
 	display: grid;
 	grid-template-areas:
 		"side con ser"
 		"bot bot bot";
 	grid-template-columns: 210px 2fr 1fr;
 	grid-template-rows: 1fr auto;
-	height:100%;
-	min-height:100%;
-	position: fixed;
-	width:100%;
-}
-
-.sidebar {
-	width: 210px;
-	grid-area: side;
-	background: linear-gradient(180deg, #36fc5c 0%, #111 20%);
-}
-
-.queuepanel {
-	background-color: #222222;
-	width: 100%;
 	height: 100%;
-	grid-area: con;
-	background: linear-gradient(180deg, #fc3682 0%, #222 20%);
+	min-height: 100%;
+	position: fixed;
+	width: 100%;
 }
 
 .bottombar {
@@ -63,31 +42,39 @@ body {
 	grid-area: bot;
 }
 
-.jukelogo {
+/* SIDEBAR */
+
+.sidebar { /* Basic stuff, like the width and gradient background */
+	width: 210px;
+	grid-area: side;
+	background: linear-gradient(180deg, #36fc5c 0%, #111 20%);
+}
+
+.jukelogo { /* Positioning of the SVG logo */
 	width: 160px;
 	margin: 30px 24px 0 24px;
 }
 
-.header {
+.header { /* "Users" */
 	font-family: Pacifico, Arial, sans-serif;
 	font-weight: 500;
 	font-size: 24px;
 	margin: 8px 24px -8px 24px;
 }
 
-.buttons {
+.sidebutton { /* "Leave session" button */
 	padding-left: 24px;
 	padding-right: 24px;
 	margin: 8px 0px 10px 0px;
 }
 
-.buttonlabel {
+.buttonlabel { /* More about the button (I sure make this messy) */
 	align-items: center;
 	display: flex;
 	height: 20px;
 }
 
-.linktext {
+.linktext { /* Again, more button related things (also used for now playing bar) */
 	color:#8dfcf0;
 	font-size: 14px;
 	font-weight: 500;
@@ -96,13 +83,13 @@ body {
 	transition-duration: .2s;
 }
 
-.linktext:hover {
+.linktext:hover { /* Changes color, gets bolder, and underlines on hover */
 	color: #36fce7;
 	font-weight: 700;
 	text-decoration: underline;
 }
 
-.sidedivider {
+.sidedivider { /* Line separating session info from userlist */
 	position: relative;
 	background-color: #8dfcf0;
 	border: none;
@@ -111,7 +98,7 @@ body {
 	min-height: 1px;
 }
 
-.queuedivider {
+.queuedivider { /* Line separating queueinfo to queue list */
 	position: relative;
 	background-color: #fcd536;
 	border: none;
@@ -120,7 +107,7 @@ body {
 	min-height: 1px;
 }
 
-.searchdivider {
+.searchdivider { /* Line separating searchinfo to search results */
 	position: relative;
 	background-color: #36fc5c;
 	border: none;
@@ -129,18 +116,24 @@ body {
 	min-height: 1px;
 }
 
-.userlist {
+.userlist { /* list of usernames */
 	border-radius: 4px;
 	margin: 0px;
 }
 
-.users {
+ul.userlist { /* Padding for the userlist */
+	margin: 8px 8px 8px 8px;
+	padding-left: 16px;
+	padding-right: 16px;
+}
+
+.users { /* Grid for the usernames and the crown/kick icons */
 	display: grid;
 	grid-template-columns: [user] 1fr [kick] 10px;
 	margin: 0 5px 0 0;
 }
 
-.usertext {
+.usertext { /* How many classes do users need? */
 	font-size: 14px;
 	font-weight: 400;
 	white-space: nowrap;
@@ -149,26 +142,34 @@ body {
 	overflow: hidden;
 }
 
-.kick .crown {
+.kick .crown { /* Keeps both the crown and kick icon consistent */
 	font-size: 14px;
 	font-weight: 400;
 }
 
-.crown {
+.crown { /* Crown = host of server */
 	color: #fcd536;
 }
 
-.kick {
+.kick { /* Kick the bad eggs out (if you're a host), hidden by default */
 	color:#111111;
 	text-decoration: none;
 	transition-duration: .2s;
 }
 
-.kick:hover {
+.kick:hover { /* Turns red when you hover over it */
 	color: #fc3682;
 }
 
-.queuebanner {
+/* QUEUE */
+
+.queuepanel { /* The queue background */
+	background-color: #222222;
+	grid-area: con;
+	background: linear-gradient(180deg, #fc3682 0%, #222 20%);
+}
+
+.queuebanner { /* "Your Queue" */
 	padding-left: 24px;
 	padding-top: 16px;
 	font-size: 36px;
@@ -177,13 +178,13 @@ body {
 	margin: 0px;
 }
 
-.queue {
+.queue { /* The queue itself */
 	margin: 0px;
 	padding-left: 24px;
 	padding-right: 24px;
 }
 
-.queuegrid {
+.queuegrid { /* 5 columns: queue number, title/artist, album title, who queued it, timelength */
 	grid-template-columns: [num] 20px [title] 6fr [album] 4fr [queuer] 2fr [time] 50px;
 	display: grid;
 	gap: 10px;
@@ -192,19 +193,54 @@ body {
 	padding-top: 5px;
 }
 
-a.youtubelink {
+a.youtubelink { /* YouTube URL instead of album for queued YouTube videos */
 	color: #fc8db8;
 	text-decoration: none;
 	transition-duration: .2s;
 }
 
-a.youtubelink:hover {
+a.youtubelink:hover { /* Just making it redder and bolder whatever */
 	color: #fc3682;
 	font-weight: 700;
 	text-decoration: underline;
 }
 
-.titleartist {
+.queueinfo { /* bar explaining what each queue section is for */
+	position: relative;
+	color: #fcd536;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
+}
+
+.queuenumber { /* number of item on queue */
+	position: relative;
+	text-align: right;
+	font-family: 'Roboto Mono';
+}
+
+.queuenumber:hover { /* goal: make this a clickable way to votekick or remove a song */
+	font-weight: 300;
+	color: #fc3682;
+	display: block;
+	opacity: 100;
+	overflow: hidden;
+	transition-duration: .2s;
+	position: relative;
+	text-align: right;
+	font-family: 'Roboto Mono';
+}
+
+.queuenumber:hover span { /* hides the number */
+	display: none;
+}
+
+.queuenumber:hover:before { /* replaces number with an X */
+	content: "⠀X";
+}
+
+.titleartist { /* 2x2 grid for title and artist */
 	display: grid;
 	grid-template-areas:
 		"img title"
@@ -215,35 +251,14 @@ a.youtubelink:hover {
 	align-items: center;
 }
 
-.queuenumber {
-	position: relative;
-	text-align: right;
-	font-family: 'Roboto Mono';
-}
-
-.queuelength {
-	font-family: 'Roboto Mono';
-	position: relative;
-	text-align: right;
-}
-
-.queueinfo {
-	position: relative;
-	color: #fcd536;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	display: block;
-	overflow: hidden;
-}
-
-.queueimage {
+.queueimage { /* album cover (or youtube thumbnail) */
 	width: 40px;
 	padding: 0;
 	margin: 0;
 	grid-area: img;
 }
 
-.queuetitle {
+.queuetitle { /* song title */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	display: block;
@@ -252,7 +267,7 @@ a.youtubelink:hover {
 	padding-left: 10px;
 }
 
-.queueartist {
+.queueartist { /* name of the artist */
 	font-size: 12px;
 	color: #b9b9b9;
 	white-space: nowrap;
@@ -263,29 +278,35 @@ a.youtubelink:hover {
 	padding-left: 10px;
 }
 
-.queuealbum {
+.queuealbum { /* name of the album */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	display: block;
 	overflow: hidden;
 }
 
-.queuedby {
+.queuedby { /* who queued the song */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	display: block;
 	overflow: hidden;
 }
 
-.searchpanel {
+.queuelength { /* length of song */
+	font-family: 'Roboto Mono';
+	position: relative;
+	text-align: right;
+}
+
+/* SEARCH */
+
+.searchpanel { /* background for search panel */
 	background-color: #222222;
-	width: 100%;
-	height: 100%;
 	grid-area: ser;
 	background: linear-gradient(180deg, #36fce7 0%, #222 20%);
 }
 
-.search {
+.search { /* search bar */
 	background-color: #fff;
 	color: #000;
 	border: 0;
@@ -294,22 +315,22 @@ a.youtubelink:hover {
 	margin-left: 24px;
 	margin-right: 24px;
 	margin-bottom: 5px;
-	width: 21vw;
+	width: 21vw; /* adjust this */
 	padding: 10px;
 	font-family: Roboto, Arial, sans-serif;
 }
 
-.search::placeholder {
+.search::placeholder { /* font size of the placeholder font */
 	font-size: 12px;
 }
 
-.results {
+.results { /* search results, basically just another queue list. reuses a lot of queue classes actually */
 	margin: 0px;
 	padding-left: 24px;
 	padding-right: 24px;
 }
 
-.searchgrid {
+.searchgrid { /* 3 colums: title/artist, album, time */
 	grid-template-columns: [title] 6fr [album] 4fr [time] 50px;
 	display: grid;
 	gap: 10px;
@@ -318,7 +339,7 @@ a.youtubelink:hover {
 	padding-top: 5px;
 }
 
-.searchinfo {
+.searchinfo { /* bar explaining the columns */
 	color: #36fc5c;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -326,13 +347,15 @@ a.youtubelink:hover {
 	overflow: hidden;
 }
 
-.nowplaying {
+/* NOW PLAYING BAR */
+
+.nowplaying { /* 2 columns: what's actually playing and the controls */
 	display: grid;
-	grid-template-columns: [num] 1fr [controls] 2fr;
+	grid-template-columns: [playing] 1fr [controls] 2fr;
 	padding-left: 24px; 
 }
 
-.songsnp {
+.songsnp { /* 2x2 grid of title artist and album cover */
 	display: grid;
 	grid-template-areas:
 		"npimg nptit"
@@ -342,17 +365,17 @@ a.youtubelink:hover {
 	align-items: center;
 }
 
-.npimagespan {
+.npimagespan { /* uhh */
 	grid-area: npimg;
 }
 
-.npimage {
+.npimage { /* adjusting image size */
 	width: 60px;
 	padding: 0;
 	margin: 0;
 }
 
-.nptitle {
+.nptitle { /* title of song currently playing */
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	display: block;
@@ -363,7 +386,7 @@ a.youtubelink:hover {
 	font-size: 18px;
 }
 
-.npartist {
+.npartist { /* artist of song currently playing */
 	font-size: 12px;
 	color: #b9b9b9;
 	white-space: nowrap;
@@ -372,18 +395,6 @@ a.youtubelink:hover {
 	overflow: hidden;
 	grid-area: npart;
 	padding-left: 10px;
-}
-
-.queuenumber:hover {
-	font-weight: 300;
-	color: #fc3682;
-	display: block;
-	opacity: 100;
-	overflow: hidden;
-	transition-duration: .2s;
-	position: relative;
-	text-align: right;
-	font-family: 'Roboto Mono';
 }
 
 /* HOME.HTML */
@@ -399,52 +410,16 @@ a.youtubelink:hover {
 	margin: 30px 24px 0 24px;
 }
 
-.homebuttons {
+.homebuttons { /* padding and spacing for buttons */
 	padding: 0px;
 	margin-bottom: 10px;
 }
 
-a {
+a { /* no underlines by default */
 	text-decoration: none;
 }
 
-.sessionID {
-	background-color: #fff;
-	color: #000;
-	border: 0;
-	border-radius: 5px;
-	width: 300px;
-	height: 20px;
-	padding: 10px;
-	font-family: Roboto, Arial, sans-serif;
-	text-align:center;
-}
-
-.joinbutton {
-	background-color: #36fce7;
-	color: #000;
-	border: 0;
-	border-radius: 5px;
-	width: 97px;
-	height: 40px;
-	font-family: Roboto, Arial, sans-serif;
-	text-align:center;
-	cursor: pointer;
-}
-
-.createbutton {
-	background-color: #36fce7;
-	color: #000;
-	border: 0;
-	border-radius: 5px;
-	width: 420px;
-	height: 40px;
-	font-family: Roboto, Arial, sans-serif;
-	text-align:center;
-	cursor: pointer;
-}
-
-.spotifybutton {
+.spotifybutton { /* sign in with spotify button */
 	background-color: #36fc5c;
 	color: #000;
 	border: 0;
@@ -458,19 +433,19 @@ a {
 	animation: begging 1s infinite;
 }
 
-@keyframes begging {
+@keyframes begging { /* animation to stress that logging in with spotify is important */
 	0% {
-	  background-color: #36fc5c;
+		background-color: #36fc5c;
 	}
 	50% {
-	  background-color: #83fc9a;
+		background-color: #83fc9a;
 	}
 	100% {
-	  background-color: #36fc5c;
+		background-color: #36fc5c;
 	}
-  }
+}
 
-.usernamebutton {
+.usernamebutton { /* enter username prompt */
 	background-color: #fff;
 	color: #000;
 	border: 0;
@@ -480,4 +455,40 @@ a {
 	padding: 10px;
 	font-family: Roboto, Arial, sans-serif;
 	text-align:center;
+}
+
+.sessionID { /* enter session id prompt */
+	background-color: #fff;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 300px;
+	height: 20px;
+	padding: 10px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+}
+
+.joinbutton { /* join session button */
+	background-color: #36fce7;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 96px;
+	height: 40px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+	cursor: pointer;
+}
+
+.createbutton { /* create new session button */
+	background-color: #36fce7;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 420px;
+	height: 40px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+	cursor: pointer;
 }
