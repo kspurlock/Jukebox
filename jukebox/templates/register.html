@@ -1,0 +1,20 @@
+{%extends "base_home.html" %}
+{% block content %}
+<form method="POST" class="form-register" style="color:white"> <!--POST requests affect the database-->
+    <!-- KIAN NOTE: you can change the styling of these just like normal HTML fields-->
+    {{ form.hidden_tag()}}
+
+    {{ form.username.label() }} <!-- Could just put tag with username in it here-->
+    {{ form.username(class="form-control", placeholder="") }}
+    <br>
+    {{ form.password_init.label()}}
+    {{ form.password_init(class="form-control", placeholder="")}}
+    <br>
+    {{ form.password_confirm.label()}}
+    {{ form.password_confirm(class="form-control", placeholder="")}}
+    <br>
+    {{form.submit()}}
+
+</form> 
+
+{% endblock %}

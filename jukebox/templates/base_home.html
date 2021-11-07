@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jukebox: A music queue thing</title>
+	<link rel="stylesheet" href="../static/style.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="../static/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon-16x16.png">
+	<link rel="manifest" href="../static/images/site.webmanifest">
+</head>
+	<body class="wrapper">
+		<img class="jukehomelogo" alt="Jukebox logo" src="../static/images/jukelogo.svg">
+		<p>A very unfinished music queue thing</p>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+			<div>
+				<div class="alert alert-{{category}}">
+					<button type="button" class="m1-2 mb-1 close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">
+							&times;
+						</span>
+					</button>
+					{{ message }}
+				</div>
+			</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+    {% block content %}
+    {% endblock %}
+
+	</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Jukebox: A music queue thing</title>
+	<link rel="stylesheet" href="../static/style.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="../static/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../static/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../static/images/favicon-16x16.png">
+	<link rel="manifest" href="../static/images/site.webmanifest">
+</head>
+
+<body id="body_main">
+	<div class="main">
+		<div class="sidebar">
+			<div>
+				<img class="jukelogo" alt="Jukebox logo" src="../static/images/jukelogo.svg">
+			</div>
+			<ul class="sidebutton">
+				<li class="buttonlabel">
+					<span class="oneline" id="createsession"></span>
+				</li>
+				<li class="buttonlabel">
+					<a class="linktext" href="{{url_for('home_page')}}"> <!-- Absolute routing based on route method -->
+						<span class="oneline" id="leavesession">Leave session</span>
+					</a>
+				</li>
+			</ul>
+			<hr class="sidedivider">
+			<h3 class="header">Users</h3>
+			<ul class="userlist">
+				{% for user in users %} <!-- Example of Jenga2 template for Python injection -->
+					<li class="users">
+						<span class="usertext" id="user1">{{ user.username }}</span>
+					</li>
+				{% endfor %}
+
+
+			</ul>
+		</div>
+		<div class="queuepanel">
+			<h1 class="queuebanner">Your Queue</h1>
+			<ul class="queue">
+				<li class="songs queuegrid">
+					<span class="queueinfo queuelength">#</span>
+					<span class="queueinfo">Title</span>
+					<span class="queueinfo">Album</span>
+					<span class="queueinfo">Queued by</span>
+					<span class="queueinfo queuelength">🕓&#xFE0E;</span>
+				</li>
+				<hr class="queuedivider">
+
+				{% for song in queue %}
+				<li class="songs queuegrid" id="song1">
+					<span class="queuenumber">1</span>
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">{{song.song_name}}</span>
+						<span class="queueartist">{{song.artist_name}}</span>
+					</ul>
+					<span class="queuealbum">{{song.album_name}}</span>
+					<span class="queuedby">{{song.queued_by}}</span>
+					<span class="queuelength">{{song.length}}</span>
+				</li>
+				{% endfor %}
+				
+	    	</ul>
+		</div>
+		<div class="searchpanel">
+			<li class="contentheader">
+				<span><input type="text" class="search" id="addsongs" placeholder="Search Spotify or paste YouTube URL"></span>
+			</li>
+			<ul class="results">
+				<span class="resultsfor">Spotify results for "<em>igor</em>"</h1>
+				<li class="songs searchgrid">
+					<span class="searchinfo">Title</span>
+					<span class="searchinfo">Album</span>
+					<span class="searchinfo queuelength">🕓&#xFE0E;</span>
+				</li>
+				<hr class="searchdivider">
+				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">IGOR'S THEME</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="queuealbum">IGOR</span>
+					<span class="queuelength">3:20</span>
+				</li>
+				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">PUPPET</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="queuealbum">IGOR</span>
+					<span class="queuelength">2:59</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">EARFQUAKE</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="queuealbum">IGOR</span>
+					<span class="queuelength">3:10</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">Igor's Party</span>
+						<span class="queueartist">Tony & The Monstrosities</span>
+					</ul>
+					<span class="queuealbum">Igor's Party</span>
+					<span class="queuelength">2:21</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">GONE, GONE / THANK YOU</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="queuealbum">IGOR</span>
+					<span class="queuelength">6:15</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">I THINK</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="queuealbum">IGOR</span>
+					<span class="queuelength">3:32</span>
+				</li>
+	    	</ul>
+		</div>
+		<div class="bottombar">
+			<ul class="nowplaying">
+				<li class="songsnp">
+					<span class="npimagespan"><img class="npimage" src="../static/images/jukeplaceholder.svg"></span>
+					<span class="nptitle">Kokomoaaaaaaaaaaaaaaaa</span>
+					<span class="npartist">The Beach Boys</span>
+				</li>
+				<li class="controls">
+					<a class="linktext" href="#">
+						<span class="playandpause" id="playandpause">Play / Pause</span>
+					</a>
+					<a class="linktext" href="#">
+						<span class="voteskip" id="voteskip">Voteskip</span>
+					</a>
+					<a class="linktext" href="#">
+						<span class="forceskip" id="forceskip">Forceskip</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<script src="{{url_for('static', filename = 'script.js')}}"></script>
+</body>
+</html>

@@ -413,6 +413,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 .homebuttons { /* padding and spacing for buttons */
 	padding: 0px;
 	margin-bottom: 10px;
+	position: relative ;
 }
 
 a { /* no underlines by default */
