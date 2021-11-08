@@ -25,6 +25,11 @@
 						<span class="oneline" id="leavesession">Leave session</span>
 					</a>
 				</li>
+				<li class="buttonlabel">
+					<a class="linktext" href="{{url_for('home_page')}}"> <!-- Absolute routing based on route method -->
+						<span class="oneline" id="logout">Log out</span>
+					</a>
+				</li>
 			</ul>
 			<hr class="sidedivider">
 			<h3 class="header">Users</h3>
@@ -49,6 +54,17 @@
 					<span class="queueinfo queuelength">🕓&#xFE0E;</span>
 				</li>
 				<hr class="queuedivider">
+				<li class="songs queuegrid" id="song1">
+					<span class="queuenumber">1</span>
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">Blah</span>
+						<span class="queueartist">Blah</span>
+					</ul>
+					<span class="queuealbum">Blah</span>
+					<span class="queuedby">blah</span>
+					<span class="queuelength">6:66</span>
+				</li>
 
 				{% for song in queue %}
 				<li class="songs queuegrid" id="song1">
