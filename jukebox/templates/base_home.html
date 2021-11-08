@@ -10,7 +10,7 @@
 	<link rel="manifest" href="../static/images/site.webmanifest">
 </head>
 	<body class="wrapper">
-		<img class="jukehomelogo" alt="Jukebox logo" src="../static/images/jukelogo.svg">
+		<a href="{{url_for('home_page')}}"><img class="jukehomelogo" alt="Jukebox logo" src="../static/images/jukelogo.svg"></a>
 		<p>A very unfinished music queue thing</p>
 	{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
