@@ -33,7 +33,7 @@ def register_page():
         return redirect(url_for("home_page"))
     if form.errors != {}:  # If not errors found from validation
         for err_msg in form.errors.values():
-            flash(f"Error on creating a user: {err_msg}", category="danger")
+            flash(f"Error on creating a user: {err_msg[0]}", category="danger")
     return render_template("register.html", form=form)
 
 
