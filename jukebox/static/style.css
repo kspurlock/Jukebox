@@ -34,12 +34,7 @@ body { /* Basic stuff for every page */
 	min-height: 100%;
 	position: fixed;
 	width: 100%;
-}
-
-.bottombar {
-	background-color: #333333;
-	width: 100%;
-	grid-area: bot;
+	background: linear-gradient(125deg, #fcd536 0%, #fc8db8 50%, #8dfcf0);
 }
 
 /* SIDEBAR */
@@ -47,7 +42,7 @@ body { /* Basic stuff for every page */
 .sidebar { /* Basic stuff, like the width and gradient background */
 	width: 210px;
 	grid-area: side;
-	background: linear-gradient(180deg, #36fc5c 0%, #111 20%);
+	background: linear-gradient(180deg, #36fc5c 0%, rgba(34, 34, 34, 0.75) 20%);
 }
 
 .jukelogo { /* Positioning of the SVG logo */
@@ -166,7 +161,7 @@ ul.userlist { /* Padding for the userlist */
 .queuepanel { /* The queue background */
 	background-color: #222222;
 	grid-area: con;
-	background: linear-gradient(180deg, #fc3682 0%, #222 20%);
+	background: linear-gradient(180deg, #fc3682 0%, rgba(34, 34, 34, 0.50) 20%);
 }
 
 .queuebanner { /* "Your Queue" */
@@ -222,7 +217,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 
 .queuenumber:hover { /* goal: make this a clickable way to votekick or remove a song */
 	font-weight: 300;
-	color: #fc3682;
+	color: #fc8db8;
 	display: block;
 	opacity: 100;
 	overflow: hidden;
@@ -269,7 +264,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 
 .queueartist { /* name of the artist */
 	font-size: 12px;
-	color: #b9b9b9;
+	color: #cfcfcf;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	display: block;
@@ -303,7 +298,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 .searchpanel { /* background for search panel */
 	background-color: #222222;
 	grid-area: ser;
-	background: linear-gradient(180deg, #36fce7 0%, #222 20%);
+	background: linear-gradient(180deg, #36fce7 0%, rgba(34, 34, 34, 0.75) 20%);
 }
 
 .search { /* search bar */
@@ -348,6 +343,12 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 }
 
 /* NOW PLAYING BAR */
+
+.bottombar {
+	background-color: rgba(34, 34, 34, 0.85);
+	width: 100%;
+	grid-area: bot;
+}
 
 .nowplaying { /* 2 columns: what's actually playing and the controls */
 	display: grid;
