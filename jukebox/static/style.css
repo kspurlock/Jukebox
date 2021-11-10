@@ -515,7 +515,6 @@ a { /* no underlines by default */
 	text-align:center;
 }
 .alert {
-	background-color: #fc3682;
 	border: 0;
 	border-radius: 5px;
 	width: 400px;
@@ -523,6 +522,22 @@ a { /* no underlines by default */
 	padding: 10px 10px 10px 5px;
 	margin: auto auto 10px auto;
 }
+
+
+/*Button classes to match different notification types*/
+/*Please adjust the colours on these Kian I'm bad at it */
+.alert-danger {
+	background-color: #fc3682;
+}
+
+.alert-info {
+	background-color: #effc36;
+}
+
+.alert-success {
+	background-color:rgba(5, 212, 33, 0.5)
+}
+
 .close {
 	border: 0;
 	background-color: #fc3682;

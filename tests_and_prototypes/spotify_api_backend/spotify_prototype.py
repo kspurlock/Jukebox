@@ -1,3 +1,4 @@
+#%%
 import os
 import sys
 import json
@@ -14,7 +15,7 @@ try:
 except (AttributeError, JSONDecodeError):
     os.remove(f".cache-{username}")
     token = util.prompt_for_user_token(username, scope)
-
+#%%
 spotifyObject = spotipy.Spotify(auth=token)
 devices = spotifyObject.devices()
 print(json.dumps(devices, sort_keys=True, indent=4))

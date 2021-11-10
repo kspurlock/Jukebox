@@ -9,10 +9,12 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
 app = Flask(__name__) # Create a flask application
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///jukebox.db' # Tell the server where the database is
-app.config['SECRET_KEY'] = 'aa153300de53422ff3fe4c61' # Assign secret key to the server for form security
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///jukebox.db" # Tell the server where the database is
+app.config["SECRET_KEY"] = "aa153300de53422ff3fe4c61" # Assign secret key to the server for form security
 db = SQLAlchemy(app) # Database manager
 bcrypt = Bcrypt(app) # Password hashing manager
 login_manager = LoginManager(app) # Login manager
+# Redirects users to login page if they try to enter a restricted area
+login_manager.login_view = "login_page"
 
 from jukebox import routes # This is placed here to avoid circular imports

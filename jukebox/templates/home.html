@@ -1,19 +1,29 @@
 {%extends "base_home.html" %}
 {% block content %}
 	<ul class="homebuttons">
-				
-		<li class="homebuttons">
-			<a href="{{ url_for('login_page') }}"><button class="spotifybutton">Login</button></a>
-		</li>
-		<li class="homebuttons">
-			<a href="{{ url_for('register_page') }}"><button class="spotifybutton">Register</button></a>
-		</li>
-		<!--
-		Need to redirect user to Spotify login page when clicked, and then back to home page after login
-		<li class="homebuttons">
-			<span><input type="text" class="usernamebutton" placeholder="Enter a username"></span>
-		</li>
-		-->
+			
+		{% if current_user.is_authenticated %}
+			<p>
+				Welcome, {{ current_user.username }}!
+			</p>
+			<li class="homebuttons">
+				<a href="{{ url_for('logout_page') }}"><button class="spotifybutton">Logout</button></a>
+			</li>
+
+			{% if not current_user.spotify_key %} <!--Will only display if user hasn't added Spotify-->
+				<li class="homebuttons"> <!--This would be even better Kian if you can add the spotify emblem in the button-->
+					<a href="#"><button class="spotifybutton">Add Spotify</button></a> 
+				</li>
+			{% endif %}
+		{% else %} <!--Will only display if not logged in-->
+			<li class="homebuttons">
+				<a href="{{ url_for('login_page') }}"><button class="spotifybutton">Login</button></a>
+			</li>
+			<li class="homebuttons">
+				<a href="{{ url_for('register_page') }}"><button class="spotifybutton">Register</button></a>
+			</li>
+		{% endif %}
+		
 		<li class="homebuttons">
 			<span><input type="text" class="sessionID" placeholder="Enter 5 digit session ID"></span>
 			<a href="{{ url_for('player_page') }}"><button class="joinbutton">Join session</button></a>
