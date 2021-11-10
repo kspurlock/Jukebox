@@ -37,6 +37,14 @@ def register_page():
     return render_template("register.html", form=form)
 
 
+@app.route("/spotify-success/<auth_key>")
+def spotify_success(auth_key):
+    """May need this to get the spotify user key on redirect"""
+    key = auth_key
+
+    return
+
+
 @app.route("/player")
 def player_page():
     """Provides routing to the player page"""

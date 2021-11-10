@@ -12,7 +12,8 @@ class User(db.Model):
 class Session(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=5), nullable=False, unique=True)
-    users = db.relationship("User", backref="owned_user", lazy=True)
+    host_user = db.Column(db.String(length=5), nullable=False, unique=True)
+    users = db.relationship("User", backref="has_user", lazy=True)
 
 
 class Song(db.Model):
