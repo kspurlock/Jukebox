@@ -9,4 +9,3 @@ createSession.innerHTML = `Session ID: ${randomID}`;
 const vetoButton = document.querySelector('vetobutton');
 const removeSong = document.getElementById('song1');
 
-
