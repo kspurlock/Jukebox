@@ -1,3 +1,25 @@
 {%extends "base_home.html" %}
 {% block content %}
+
+<div class="registerpage">
+    <form method="POST" class="form-register">
+        {{ form.hidden_tag() }}
+
+        {{ form.username.label() }}
+        <br>
+        {{ form.username(class="form-control", placeholder="") }}
+        <br>
+        {{ form.password.label() }}
+        <br>
+        {{ form.password(class="form-control", placeholder="") }}
+        <br>
+        {{form.submit(class='joinbutton')}}
+
+        <div class="registerpage"> <!--Kian note: CSS this please-->
+            <h6>Don't have an account?</h6>
+            <a class="" href="{{ url_for('register_page') }}">Register</a>
+        </div>
+    </form>
+</div>
+
 {% endblock %}
