@@ -53,6 +53,7 @@ def register_page():
         )
         db.session.add(user_to_create)
         db.session.commit()
+        login_user(user_to_create) # Automatically login after registration
         return redirect(url_for("home_page"))
     if form.errors != {}:  # If errors found from validation
         for err_msg in form.errors.values():
