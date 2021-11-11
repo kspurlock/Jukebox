@@ -17,8 +17,8 @@ Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.15.1
 greenlet==1.1.2
 idna==3.3
-ipykernel==6.5.0
-ipython==7.29.0
+ipykernel==5.5.6
+ipython==7.16.1
 itsdangerous==2.0.1
 jedi==0.18.0
 Jinja2==3.0.2
@@ -47,7 +47,7 @@ SQLAlchemy==1.4.26
 toml==0.10.2
 tomli==1.2.2
 tornado==6.1
-traitlets==5.1.1
+traitlets==4.3.3
 typing-extensions==3.10.0.2
 urllib3==1.26.7
 wcwidth==0.2.5
