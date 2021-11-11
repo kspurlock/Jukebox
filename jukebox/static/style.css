@@ -408,7 +408,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 
 .jukehomelogo { /* scaling the logo SVG */
 	width: 300px;
-	margin: 30px 24px 0 24px;
+	margin: 64px 24px 0 24px;
 }
 
 .homebuttons { /* padding and spacing for buttons */
@@ -519,30 +519,35 @@ a { /* no underlines by default */
 	border-radius: 5px;
 	width: 400px;
 	line-height: 1;
-	padding: 10px 10px 10px 5px;
+	padding: 10px 10px 10px 10px;
 	margin: auto auto 10px auto;
 }
 
 
 /*Button classes to match different notification types*/
 /*Please adjust the colours on these Kian I'm bad at it */
-.alert-danger {
+.alert-message {
 	background-color: #fc3682;
+	color: white;
 }
 
 .alert-info {
 	background-color: #effc36;
+	color: black;
 }
 
 .alert-success {
-	background-color:rgba(5, 212, 33, 0.5)
+	background-color: #36fc5c;
+	color: black;
 }
 
 .close {
 	border: 0;
-	background-color: #fc3682;
-	color: white;
+	background-color: #fc368200;
+	transition-duration: .2s;
 }
+
 .close:hover {
-	font-weight: 700;
+	color: white;
+	background-color: #fc3682;
 }
