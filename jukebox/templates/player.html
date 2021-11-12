@@ -18,7 +18,7 @@
 			</div>
 			<ul class="sidebutton">
 				<li class="buttonlabel">
-					<span class="oneline" id="createsession"></span>
+					<span class="oneline" id="createsession"><body onload="createID()"></span>
 				</li>
 				<li class="buttonlabel">
 					<!--
@@ -169,7 +169,8 @@
 			</ul>
 		</div>
 	</div>
-	<script type="text/javascript"
-         src="{{ url_for('static', filename='script.js') }}"></script>
+	{% block script %}
+	<script src="{{url_for('static', filename='script.js')}}"></script>
+	{% endblock %}
 </body>
 </html>
