@@ -352,7 +352,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 
 .nowplaying { /* 2 columns: what's actually playing and the controls */
 	display: grid;
-	grid-template-columns: [playing] 1fr [controls] 2fr;
+	grid-template-columns: [playing] 1fr [controls] 1fr [vetocounter] 1fr;
 	padding-left: 24px; 
 }
 
@@ -550,4 +550,14 @@ a { /* no underlines by default */
 .close:hover {
 	color: white;
 	background-color: #fc3682;
+}
+
+.vetocounter {
+	text-align: right;
+	padding-right: 490px;
+	color:#8dfcf0;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16px;
+	text-decoration: none;
 }
