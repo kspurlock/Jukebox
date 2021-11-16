@@ -162,6 +162,7 @@ ul.userlist { /* Padding for the userlist */
 	background-color: #222222;
 	grid-area: con;
 	background: linear-gradient(180deg, #fc3682 0%, rgba(34, 34, 34, 0.50) 20%);
+	overflow-y: auto;
 }
 
 .queuebanner { /* "Your Queue" */
@@ -280,6 +281,41 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 	overflow: hidden;
 }
 
+.searchalbum { /* name of the album */
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+	overflow: hidden;
+}
+
+@media (max-width: 1000px) {
+	.queuealbum {
+		display: none !important;
+	}
+	.queuegrid { /* 5 columns: queue number, title/artist, album title, who queued it, timelength */
+		grid-template-columns: [num] 20px [title] 6fr [queuer] 2fr [time] 50px !important;
+		display: grid;
+		gap: 10px;
+		align-items: center;
+		padding-bottom: 5px;
+		padding-top: 5px;
+	}
+}
+
+@media (max-width: 1100px) {
+	.searchalbum {
+		display: none !important;
+	}
+	.searchgrid { /* 3 colums: title/artist, album, time */
+		grid-template-columns: [title] 6fr [time] 50px !important;
+		display: grid;
+		gap: 10px;
+		align-items: center;
+		padding-bottom: 5px;
+		padding-top: 5px;
+	}
+}
+
 .queuedby { /* who queued the song */
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -299,6 +335,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 	background-color: #222222;
 	grid-area: ser;
 	background: linear-gradient(180deg, #36fce7 0%, rgba(34, 34, 34, 0.75) 20%);
+	overflow-y: auto;
 }
 
 .search { /* search bar */
