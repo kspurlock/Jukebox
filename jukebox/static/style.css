@@ -34,7 +34,9 @@ body { /* Basic stuff for every page */
 	min-height: 100%;
 	position: fixed;
 	width: 100%;
-	background: linear-gradient(125deg, #fcd536 0%, #fc8db8 50%, #8dfcf0);
+	background: linear-gradient(125deg, #fcd536 0%, #fc8db8 9%, #8dfcf0 18%, #fcd536 27%, #fc8db8 36%, #8dfcf0 45%, #fcd536 54%, #fc8db8 63%, #8dfcf0 72%, #fcd536 81%, #fc8db8 90%, #8dfcf0 100%);
+	background-size: 400% 400%;
+	animation: pwetty 120s linear infinite;
 }
 
 /* SIDEBAR */
@@ -42,7 +44,7 @@ body { /* Basic stuff for every page */
 .sidebar { /* Basic stuff, like the width and gradient background */
 	width: 210px;
 	grid-area: side;
-	background: linear-gradient(180deg, #36fc5c 0%, rgba(34, 34, 34, 0.75) 20%);
+	background: linear-gradient(180deg, #36fc5e 0%, rgba(34, 34, 34, 0.75) 20%);
 }
 
 .jukelogo { /* Positioning of the SVG logo */
@@ -234,6 +236,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 
 .queuenumber:hover:before { /* replaces number with an X */
 	content: "⠀X";
+	cursor: pointer;
 }
 
 .titleartist { /* 2x2 grid for title and artist */
@@ -382,7 +385,7 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 /* NOW PLAYING BAR */
 
 .bottombar {
-	background-color: rgba(34, 34, 34, 0.85);
+	background-color: rgba(34, 34, 34, 0.95);
 	width: 100%;
 	grid-area: bot;
 }
@@ -481,6 +484,18 @@ a { /* no underlines by default */
 	}
 	100% {
 		background-color: #36fc5c;
+	}
+}
+
+@keyframes pwetty { /* pretty background */
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
 	}
 }
 
