@@ -24,12 +24,3 @@ vetoButton.addEventListener('click', function() {
 });
 
 
-const alterQueue = function() {
-    $.ajax({
-        url: "{{ url_for('routes.py') }}",
-        type: "GET",
-        data: {
-            name: 'song1'
-        },
-    })
-}

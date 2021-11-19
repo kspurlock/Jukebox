@@ -1,5 +1,5 @@
 from jukebox import app
-from flask import render_template, redirect, url_for, flash, get_flashed_messages, request
+from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
 from jukebox.forms import RegisterForm, LoginForm
 from jukebox.models import User, Session, Song
 from jukebox import db
@@ -74,7 +74,7 @@ def spotify_success():
     return redirect(url_for("home_page"))
 
 
-@app.route("/player")
+@app.route("/player", methods=['GET', 'POST'])
 @login_required
 def player_page():
     """Provides routing to the player page"""
@@ -99,5 +99,13 @@ def player_page():
 
     queue_list = Song.query.all()
     user_list = User.query.all()
+
+    #GET request for JS file
+    if request.method == 'GET':
+        return jsonify()
+
+    #POST request for JS file
+    if request.method == 'POST':
+        print(request.get_json())
 
     return render_template("player.html", queue=queue_list, users=user_list)
