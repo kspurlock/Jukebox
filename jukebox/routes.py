@@ -1,9 +1,14 @@
+from werkzeug.exceptions import BadRequestKeyError
 from jukebox import app
-from flask import render_template, redirect, url_for, flash, get_flashed_messages, request, jsonify
+from flask import (render_template, redirect, url_for,
+ flash, get_flashed_messages, request, jsonify, abort)
 from jukebox.forms import RegisterForm, LoginForm
-from jukebox.models import User, Session, Song
+from jukebox.models import User, Session, Song, load_user
 from jukebox import db
 from flask_login import login_user, logout_user, login_required, current_user
+from jukebox.spot import get_user_access
+from sqlalchemy.exc import IntegrityError
+import random
 
 
 @app.route("/")
@@ -60,23 +65,67 @@ def register_page():
             flash(f"Error on creating a user: {err_msg[0]}")
     return render_template("register.html", form=form)
 
+
 @app.route("/spotify-add")
+@login_required
 def spotify_add():
-    return
+    """Initial route that leads from the home page to the spotify permission page"""
+    get_user_access(current_user.username)
 
 
-@app.route("/spotify-success/") # There is going to be a request here ?=...
+@app.route("/spotify-success/") # There is going to be a request here (code?v=...)
+@login_required
 def spotify_success():
     """May need this to get the spotify user key on redirect"""
-    query_string = str(request.query_string)
-    query_string = query_string[7:]
-    current_user.spotify_key = query_string
-    return redirect(url_for("home_page"))
+    try:
+        query_string = request.args["code"]
+        try:
+            user_obj = User.query.filter_by(id=int(current_user.id)).first()
+            user_obj.spotify_key=query_string
+            db.session.commit()
+            flash("Spotify account linked!", category="success")
+            return redirect(url_for("home_page"))
 
+        except IntegrityError: # Occurs when a Spotify key has been linked to another account
+            flash("Spotify cannot be linked: Linked elsewhere.", category="danger")
+            return redirect(url_for("home_page"))
 
-@app.route("/player", methods=['GET', 'POST'])
+    except BadRequestKeyError: # Occurs when the user denies the Spotify permission page
+        flash("Spotify cannot be linked: Permission Denied", category="info")
+        return redirect(url_for("home_page"))
+
+@app.route("/create-session")
 @login_required
-def player_page():
+def create_session():
+    new_session_name = str(random.randint(10000, 99999))
+    duplicate = Session.query.filter_by(name=new_session_name).first()
+
+    while(duplicate != None): 
+        # Ensure that a unique session name is found
+        print("1")
+        new_session_name = str(random.randint(10000, 99999))
+        duplicate = Session.query.filter_by(name=new_session_name)
+
+    try:
+        session_to_create = Session(name = new_session_name, host_user = current_user.id)
+        db.session.add(session_to_create)
+        user_obj = User.query.filter_by(id=int(current_user.id)).first() # Probably need to change this to .name at some point, duplicate reference
+        user_obj.session_id = new_session_name
+        db.session.commit()
+        return redirect(url_for("player_page", session_id=new_session_name))
+
+    except IntegrityError:
+        flash("Could not create session.", category="danger")
+        return redirect(url_for("home_page"))
+
+@app.route("/player/delete-session")
+def delete_session():
+    """Performs cleanup whenever the last user leaves out of the session"""
+    return
+
+@app.route("/player/<session_id>", methods=['GET', 'POST'])
+@login_required
+def player_page(session_id):
     """Provides routing to the player page"""
 
     # Mock examples of the information that needs to be passed here
@@ -98,8 +147,9 @@ def player_page():
     ]
 
     queue_list = Song.query.all()
-    user_list = User.query.all()
+    user_list = User.query.filter_by(session_id=session_id).all()
 
+    """
     #GET request for JS file
     if request.method == 'GET':
         return jsonify()
@@ -107,5 +157,14 @@ def player_page():
     #POST request for JS file
     if request.method == 'POST':
         print(request.get_json())
-
+    """
     return render_template("player.html", queue=queue_list, users=user_list)
+
+@app.errorhandler(404)
+def not_found_error(err_msg):
+    flash(f"Error, page not found: {err_msg}")
+    return render_template("404.html")
+
+@app.route("/404-error-test")
+def error_page_test():
+    abort(404)

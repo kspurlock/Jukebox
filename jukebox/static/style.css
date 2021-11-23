@@ -578,7 +578,7 @@ a { /* no underlines by default */
 
 /*Button classes to match different notification types*/
 /*Please adjust the colours on these Kian I'm bad at it */
-.alert-message {
+.alert-danger {
 	background-color: #fc3682;
 	color: white;
 }

@@ -18,6 +18,7 @@ class RegisterForm(FlaskForm):
         if user:
             raise ValidationError("An account with this username already exists.")
         """
+
     username = StringField(
         label="Username:", validators=[Length(min=2, max=50), DataRequired()]
     )
@@ -25,17 +26,21 @@ class RegisterForm(FlaskForm):
         label="Password:", validators=[Length(min=6), DataRequired()]
     )
     password_confirm = PasswordField(
-        label="Re-type Password:", validators=[EqualTo("password_first"), DataRequired()]
+        label="Re-type Password:",
+        validators=[EqualTo("password_first"), DataRequired()],
     )
     submit = SubmitField(label="Register")
 
-class LoginForm(FlaskForm):
-    username = StringField(
-        label="Username:", validators=[DataRequired()]
-    )
 
-    password = PasswordField(
-        label="Password:", validators=[DataRequired()]
-    )
+class LoginForm(FlaskForm):
+    """Handles all pertinent info related to the login page."""
+    username = StringField(label="Username:", validators=[DataRequired()])
+
+    password = PasswordField(label="Password:", validators=[DataRequired()])
 
     submit = SubmitField(label="Login")
+
+
+class SessionForm(FlaskForm):
+    """Will handle the transmission of a user from home page to session page"""
+    None

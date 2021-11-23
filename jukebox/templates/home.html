@@ -12,7 +12,7 @@
 
 			{% if not current_user.spotify_key %} <!--Will only display if user hasn't added Spotify-->
 				<li class="homebuttons"> <!--This would be even better Kian if you can add the spotify emblem in the button-->
-					<a href="#"><button class="spotifybutton">Add Spotify</button></a> 
+					<a href="{{ url_for('spotify_add') }}"><button class="spotifybutton">Add Spotify</button></a> 
 				</li>
 			{% endif %}
 		{% else %} <!--Will only display if not logged in-->
@@ -26,13 +26,20 @@
 		
 		<li class="homebuttons">
 			<span><input type="text" class="sessionID" placeholder="Enter 5 digit session ID"></span>
-			<a href="{{ url_for('player_page') }}"><button class="joinbutton">Join session</button></a>
+			<a href="#"><button class="joinbutton">Join session</button></a>
 		</li>
 		<!-- Need to add textbox for user to input which session to join (by session ID) -->
 		<li class="homebuttons">
-			<a href="{{ url_for('player_page') }}"><button class="createbutton">Create session</button></a>
+			<a href="{{ url_for('create_session') }}"><button class="createbutton">Create session</button></a>
 		</li>
+
+		{% if current_user.username == "admin" %}
+		<li class="homebuttons">
+			<a href="{{ url_for('error_page_test') }}"><button class="createbutton">404 test</button></a>
+		</li>
+		{% endif %}
 		<script type="text/javascript"
          src="{{ url_for('static', filename='script.js') }}"></script>
+
 	</ul>
 {% endblock %}

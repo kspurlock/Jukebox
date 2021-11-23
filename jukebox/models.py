@@ -12,10 +12,10 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)  # Primary key
     username = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
-    spotify_key = db.Column(db.String(), nullable=True)
+    spotify_key = db.Column(db.String(), nullable=True, unique=True)
     session_id = db.Column(
         db.String(length=5), db.ForeignKey("session.name")
-    )  # Foreign key is
+    )  # Foreign key is session_name (Not the id number)
 
     @property
     def password(self):
@@ -40,12 +40,16 @@ class User(db.Model, UserMixin):
         """
         return bcrypt.check_password_hash(self.password_hash, attempted_password)
 
+    def __repr__(self):
+        return self.username
+
 
 class Session(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=5), nullable=False, unique=True)
     host_user = db.Column(db.String(length=5), nullable=False, unique=True)
     users = db.relationship("User", backref="has_user", lazy=True)
+    songs = db.relationship("Song", backref="has_song", lazy=True)
 
 
 class Song(db.Model):
@@ -55,3 +59,6 @@ class Song(db.Model):
     album = db.Column(db.String(length=75), nullable=True, unique=False)
     queued_by = db.Column(db.String(length=50), nullable=False, unique=False)
     length = db.Column(db.String(length=20), nullable=True, unique=False)
+    session_id = db.Column(
+        db.String(length=5), db.ForeignKey("session.name")
+    )  # Foreign key is session_name (Not the id number)
