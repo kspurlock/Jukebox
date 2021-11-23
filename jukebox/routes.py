@@ -162,7 +162,7 @@ def player_page(session_id):
 
 @app.errorhandler(404)
 def not_found_error(err_msg):
-    flash(f"Error, page not found: {err_msg}")
+    flash(f"{err_msg}")
     return render_template("404.html")
 
 @app.route("/404-error-test")

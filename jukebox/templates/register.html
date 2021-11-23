@@ -17,12 +17,16 @@
     <br>
     {{ form.password_confirm(class="form-control", placeholder="")}}
     <br>
-    {{form.submit(class="joinbutton")}}
+    {{form.submit(class="confirmbutton")}}
     
 
     <div class="registerpage"> <!--Kian note: CSS this please-->
         <h5>Already have an account?</h5>
-        <a class="" href="{{ url_for('login_page') }}">Login</a>
+        <li class="homebuttons">
+            <a href="{{ url_for('login_page') }}">
+                <button class="confirmbutton">Login</button>
+            </a>
+       </li>
     </div>
     </form>
 </div>

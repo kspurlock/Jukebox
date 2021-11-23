@@ -535,6 +535,20 @@ a { /* no underlines by default */
 	cursor: pointer;
 }
 
+.confirmbutton { /* buttons on the login/register pages */
+	background-color: #36fce7;
+	color: #000;
+	border: 0;
+	border-radius: 5px;
+	width: 96px;
+	height: 40px;
+	font-family: Roboto, Arial, sans-serif;
+	text-align:center;
+	cursor: pointer;
+	display: block;
+	margin: auto;
+}
+
 .createbutton { /* create new session button */
 	background-color: #36fce7;
 	color: #000;
@@ -593,6 +607,11 @@ a { /* no underlines by default */
 	color: black;
 }
 
+.alert-message {
+	background-color: #36fce7;
+	color: black;
+}
+
 .close {
 	border: 0;
 	background-color: #fc368200;
@@ -612,4 +631,15 @@ a { /* no underlines by default */
 	font-weight: 500;
 	line-height: 16px;
 	text-decoration: none;
+}
+
+.uhoh {
+	font-family: Pacifico, Roboto, serif;
+	font-weight: 300;
+	font-size: 56px;
+	margin: 0;
+}
+
+h5 {
+	margin-bottom: 10px;
 }
