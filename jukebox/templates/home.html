@@ -36,12 +36,11 @@
 			<span><input type="text" class="sessionID" placeholder="Enter 5 digit session ID"></span>
 			<a href="#"><button class="joinbutton">Join session</button></a>
 		</li>
-		<!-- Need to add textbox for user to input which session to join (by session ID) -->
 		<li class="homebuttons">
 			<a href="{{ url_for('create_session') }}"><button class="createbutton">Create session</button></a>
 		</li>
 
-		{% if current_user.username == "admin" %}
+		{% if current_user.username == "admin" %} <!-- Admin test buttons-->
 		<li class="homebuttons">
 			<a href="{{ url_for('error_page_test') }}">
 				<button class="createbutton" type="button">404 test</button>
@@ -52,9 +51,19 @@
 				<button class="createbutton" type="button">Clear database</button>
 			</a>
 		</li>
-		{% endif %}
-		<script type="text/javascript"
-         src="{{ url_for('static', filename='script.js') }}"></script>
 
+		<form id="form-session" method="post" action="/">
+			<li class="homebuttons">
+				<span><input id="test_button" type="text" class="sessionID" placeholder="Enter post value"></span>
+			</li>
+		</form>
+
+		{% endif %} <!-- End admin test buttons-->
+
+		{% block script %}
+		<script type="text/javascript"
+         src="{{ url_for('static', filename='script.js') }}">
+		</script>
+		{% endblock %}
 	</ul>
 {% endblock %}

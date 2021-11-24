@@ -21,10 +21,18 @@ import random
 
 
 @app.route("/")
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 def home_page():
     """Provides routing to home page"""
-    return render_template("home.html")
+
+    if request.method == "POST":
+        val = request.form['test_button']
+        print(val)
+    
+    elif request.method =="GET":
+        return render_template("home.html")
+
+    
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -111,7 +119,6 @@ def spotify_success():
         flash("Spotify cannot be linked: Permission Denied", category="info")
         return redirect(url_for("home_page"))
 
-
 @app.route("/create-session")
 @login_required
 def create_session():
@@ -120,7 +127,6 @@ def create_session():
 
     while duplicate != None:
         # Ensure that a unique session name is found
-        print("1")
         new_session_name = str(random.randint(10000, 99999))
         duplicate = Session.query.filter_by(name=new_session_name)
 
@@ -184,6 +190,7 @@ def player_page(session_id):
 
     if user_obj.session_id != str(session_id):
         # Handles the case where a user tries to join through the URL
+
         flash("Hey! you can't join a session like that!", category="danger")
         return redirect(url_for("home_page"))
 

@@ -43,4 +43,4 @@ class LoginForm(FlaskForm):
 
 class SessionForm(FlaskForm):
     """Will handle the transmission of a user from home page to session page"""
-    None
+    session_id = StringField(label="Enter 5 digit session ID")
