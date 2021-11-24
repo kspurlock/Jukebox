@@ -11,25 +11,24 @@
 </head>
 
 <body id="body_main">
-	
 	<div class="main">
-
-		<!-- Start user siderbar -->
 		<div class="sidebar">
 			<div>
 				<img class="jukelogo" alt="Jukebox logo" src="../static/images/jukelogo.svg">
 			</div>
 			<ul class="sidebutton">
 				<li class="buttonlabel">
-					<span class="oneline" id="createsession">{{ session_id }}</span>
+					<span class="oneline" id="createsession"><body onload="createID()"></span>
 				</li>
 				<li class="buttonlabel">
-					<a class="linktext" href="{{ url_for('leave_session', session_id=session_id) }}"> 
+					<!--
+					<a class="linktext" href="{{url_for('home_page')}}"> 
 						<span class="oneline" id="leavesession">Leave session</span>
 					</a>
+					-->
 				</li>
 				<li class="buttonlabel">
-					<a class="linktext" href="{{ url_for('home_page') }}"> <!-- Absolute routing based on route method -->
+					<a class="linktext" href="{{url_for('home_page')}}"> <!-- Absolute routing based on route method -->
 						<span class="oneline" id="logout">Log out</span>
 					</a>
 				</li>
@@ -46,7 +45,6 @@
 
 			</ul>
 		</div>
-		<!-- Start queue panel elements -->
 		<div class="queuepanel">
 			<h1 class="queuebanner">Your Queue</h1>
 			<ul class="queue">
@@ -86,7 +84,6 @@
 				
 	    	</ul>
 		</div>
-		<!-- Start search panel elements -->
 		<div class="searchpanel">
 			<li class="contentheader">
 				<span><input type="text" class="search" id="addsongs" placeholder="Search Spotify or paste YouTube URL"></span>
@@ -108,10 +105,49 @@
 					<span class="searchalbum">IGOR</span>
 					<span class="queuelength">3:20</span>
 				</li>
+				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">PUPPET</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="searchalbum">IGOR</span>
+					<span class="queuelength">2:59</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">EARFQUAKE</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="searchalbum">IGOR</span>
+					<span class="queuelength">3:10</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">Igor's Party</span>
+						<span class="queueartist">Tony & The Monstrosities</span>
+					</ul>
+					<span class="searchalbum">Igor's Party</span>
+					<span class="queuelength">2:21</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">GONE, GONE / THANK YOU</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="searchalbum">IGOR</span>
+					<span class="queuelength">6:15</span>
+				</li>				<li class="songs searchgrid">
+					<ul class="titleartist">
+						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
+						<span class="queuetitle">I THINK</span>
+						<span class="queueartist">Tyler, The Creator</span>
+					</ul>
+					<span class="searchalbum">IGOR</span>
+					<span class="queuelength">3:32</span>
+				</li>
 	    	</ul>
 		</div>
-
-		<!-- Start bottom bar elements -->
 		<div class="bottombar">
 			<ul class="nowplaying">
 				<li class="songsnp">

@@ -24,7 +24,7 @@
         <h5>Already have an account?</h5>
         <li class="homebuttons">
             <a href="{{ url_for('login_page') }}">
-                <button class="confirmbutton">Login</button>
+                <button class="confirmbutton" type="button">Login</button>
             </a>
        </li>
     </div>
@@ -34,8 +34,8 @@
 {% endblock %}
 
 {% block script %} <!--Rece note: make sure the script tags are within this block-->
-
+<!--
 <script type="text/javascript"
          src="{{ url_for('static', filename='script.js') }}"></script>
-
+-->
 {% endblock %}

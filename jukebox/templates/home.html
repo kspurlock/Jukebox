@@ -7,20 +7,28 @@
 				Welcome, {{ current_user.username }}!
 			</p>
 			<li class="homebuttons">
-				<a href="{{ url_for('logout_page') }}"><button class="spotifybutton">Logout</button></a>
+				<a href="{{ url_for('logout_page') }}">
+					<button class="spotifybutton" type="button">Logout</button>
+				</a>
 			</li>
 
 			{% if not current_user.spotify_key %} <!--Will only display if user hasn't added Spotify-->
 				<li class="homebuttons"> <!--This would be even better Kian if you can add the spotify emblem in the button-->
-					<a href="{{ url_for('spotify_add') }}"><button class="spotifybutton">Add Spotify</button></a> 
+					<a href="{{ url_for('spotify_add') }}">
+						<button class="spotifybutton" type="button">Add Spotify</button>
+					</a> 
 				</li>
 			{% endif %}
 		{% else %} <!--Will only display if not logged in-->
 			<li class="homebuttons">
-				<a href="{{ url_for('login_page') }}"><button class="spotifybutton">Login</button></a>
+				<a href="{{ url_for('login_page') }}">
+					<button class="spotifybutton" type="button">Login</button>
+				</a>
 			</li>
 			<li class="homebuttons">
-				<a href="{{ url_for('register_page') }}"><button class="spotifybutton">Register</button></a>
+				<a href="{{ url_for('register_page') }}">
+					<button class="spotifybutton" type="button">Register</button>
+				</a>
 			</li>
 		{% endif %}
 		
@@ -35,7 +43,14 @@
 
 		{% if current_user.username == "admin" %}
 		<li class="homebuttons">
-			<a href="{{ url_for('error_page_test') }}"><button class="createbutton">404 test</button></a>
+			<a href="{{ url_for('error_page_test') }}">
+				<button class="createbutton" type="button">404 test</button>
+			</a>
+		</li>
+		<li class="homebuttons">
+			<a href="{{ url_for('purge_database_test') }}">
+				<button class="createbutton" type="button">Clear database</button>
+			</a>
 		</li>
 		{% endif %}
 		<script type="text/javascript"

@@ -48,6 +48,8 @@ class Session(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(length=5), nullable=False, unique=True)
     host_user = db.Column(db.String(length=5), nullable=False, unique=True)
+    user_count = db.Column(db.Integer(), nullable=False, unique=False)
+    veto_count= db.Column(db.Integer(), nullable=False, unique=False)
     users = db.relationship("User", backref="has_user", lazy=True)
     songs = db.relationship("Song", backref="has_song", lazy=True)
 
