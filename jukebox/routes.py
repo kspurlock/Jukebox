@@ -36,13 +36,20 @@ def home_page():
                 return redirect(url_for("home_page"))
 
             else:
-                user_obj = User.query.filter_by(id=int(current_user.id)).first()
-                user_obj.session_id = form.session_field.data
-                db.session.commit()
+                try:
+                    user_obj = User.query.filter_by(id=int(current_user.id)).first()
+                    user_obj.session_id = form.session_field.data
+                    attempted_session.user_count += 1
+                    db.session.commit()
 
-                return redirect(
-                    url_for("player_page", session_id=form.session_field.data)
-                )
+                    return redirect(
+                        url_for("player_page", session_id=form.session_field.data)
+                    )
+                    
+                except AttributeError as e:
+                    flash("You need to be logged in to join a session!", category="info")
+                    return redirect(url_for("login_page"))
+
 
     elif request.method == "GET":
         return render_template("home.html", session_form=form)
@@ -98,10 +105,15 @@ def register_page():
             username=form.username.data,
             password=form.password_first.data,  # Password param is the setter property
         )
-        db.session.add(user_to_create)
-        db.session.commit()
-        login_user(user_to_create)  # Automatically login after registration
-        return redirect(url_for("home_page"))
+
+        try: 
+            db.session.add(user_to_create)
+            db.session.commit()
+            login_user(user_to_create)  # Automatically login after registration
+            return redirect(url_for("home_page"))
+        except IntegrityError:
+            flash("This username already exists, try again!")
+            return render_template("register.html", form=form)
     if form.errors != {}:  # If errors found from validation
         for err_msg in form.errors.values():
             flash(f"Error on creating a user: {err_msg[0]}")
@@ -186,7 +198,7 @@ def leave_session(session_id):
         # Delete the session
         Session.query.filter(Session.name == session_id_).delete()
 
-    elif session_obj.host_id == user_obj.id:
+    elif session_obj.host_user == user_obj.id:
         # Case where the host leaves, need to reassign host privilege
 
         # Find the next user in the session after the host has left
@@ -251,15 +263,35 @@ def player_page(session_id):
         users=user_list,
     )
 
+@app.route("/player/<session_id>/update-userlist", methods=["POST"])
+def update_userlist(session_id):
+    print(session_id)
+    user_list = User.query.filter_by(session_id=str(session_id)).all()
+    session_obj = Session.query.filter_by(name=str(session_id)).first()
+    print(user_list)
+
+    return jsonify("", render_template("player-userlist.html", users=user_list, session_obj=session_obj))
+
+
+
 
 @app.errorhandler(404)
 def not_found_error(err_msg):
     flash(f"{err_msg}")
     return render_template("404.html")
 
-
 """Test routes go down here"""
 
+@app.route("/test-route", methods=["GET", "POST"])
+def test_route():
+
+    if request.method == "POST":
+        data = request.form.get("field1")
+        print(data)
+    if request.method =="GET":
+        print(1)
+
+    return render_template("test_page.html")
 
 @app.route("/404-error-test")
 def error_page_test():

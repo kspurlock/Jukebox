@@ -1,0 +1,12 @@
+<div id="userlist-div">
+    <ul class="userlist">
+        {% for user in users %}
+            <li class="users">
+                <span class="usertext" id="user1">{{ user.username }}</span>
+                {% if session_obj.host_user == user.id %}
+                <span class="crown">👑&#xFE0E;</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>

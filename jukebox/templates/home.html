@@ -1,4 +1,4 @@
-{%extends "base_home.html" %}
+{% extends "base_home.html" %}
 {% block content %}
 	<ul class="homebuttons">
 			
@@ -55,6 +55,13 @@
 				<button class="createbutton" type="button">Clear database</button>
 			</a>
 		</li>
+		<li class="homebuttons">
+			<a href="{{ url_for('test_route') }}">
+				<button class="createbutton" type="button">Test page</button>
+			</a>
+		</li>
+
+
 		{% endif %} <!-- End admin test buttons-->
 
 		{% block script %}
