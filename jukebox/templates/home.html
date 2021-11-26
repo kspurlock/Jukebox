@@ -32,10 +32,14 @@
 			</li>
 		{% endif %}
 		
-		<li class="homebuttons">
-			<span><input type="text" class="sessionID" placeholder="Enter 5 digit session ID"></span>
-			<a href="#"><button class="joinbutton">Join session</button></a>
-		</li>
+		<form method="POST", class="homebuttons">
+			{{ session_form.hidden_tag() }}
+			<li>
+				<span>{{ session_form.session_field(class="sessionID", placeholder="Enter 5 digit session ID") }}</span>
+				<span>{{ session_form.submit(class="joinbutton") }}</span>
+			</li>
+		</form>
+
 		<li class="homebuttons">
 			<a href="{{ url_for('create_session') }}"><button class="createbutton">Create session</button></a>
 		</li>
@@ -51,13 +55,6 @@
 				<button class="createbutton" type="button">Clear database</button>
 			</a>
 		</li>
-
-		<form id="form-session" method="post" action="/">
-			<li class="homebuttons">
-				<span><input id="test_button" type="text" class="sessionID" placeholder="Enter post value"></span>
-			</li>
-		</form>
-
 		{% endif %} <!-- End admin test buttons-->
 
 		{% block script %}

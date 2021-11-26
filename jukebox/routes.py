@@ -11,7 +11,7 @@ from flask import (
     jsonify,
     abort,
 )
-from jukebox.forms import RegisterForm, LoginForm
+from jukebox.forms import RegisterForm, LoginForm, JoinSessionForm
 from jukebox.models import User, Session, Song, load_user
 from jukebox import db
 from flask_login import login_user, logout_user, login_required, current_user
@@ -20,19 +20,32 @@ from sqlalchemy.exc import IntegrityError
 import random
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 @app.route("/home", methods=["GET", "POST"])
 def home_page():
     """Provides routing to home page"""
-
+    form = JoinSessionForm()
     if request.method == "POST":
-        val = request.form['test_button']
-        print(val)
-    
-    elif request.method =="GET":
-        return render_template("home.html")
+        if form.validate_on_submit():
+            attempted_session = Session.query.filter_by(
+                name=form.session_field.data
+            ).first()
 
-    
+            if attempted_session == None:
+                flash("This session doesn't exist!", category="info")
+                return redirect(url_for("home_page"))
+
+            else:
+                user_obj = User.query.filter_by(id=int(current_user.id)).first()
+                user_obj.session_id = form.session_field.data
+                db.session.commit()
+
+                return redirect(
+                    url_for("player_page", session_id=form.session_field.data)
+                )
+
+    elif request.method == "GET":
+        return render_template("home.html", session_form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -47,6 +60,10 @@ def login_page():
             attempted_password=form.password.data
         ):
             login_user(attempted_user)
+            attempted_user.session_id = (
+                None  # Accounts for if the user left a session by closing tab
+            )
+            db.session.commit()
             flash(
                 f"Success! You are logged in as: {attempted_user.username}",
                 category="success",
@@ -119,6 +136,7 @@ def spotify_success():
         flash("Spotify cannot be linked: Permission Denied", category="info")
         return redirect(url_for("home_page"))
 
+
 @app.route("/create-session")
 @login_required
 def create_session():
@@ -159,8 +177,8 @@ def leave_session(session_id):
     user_obj = User.query.filter_by(id=str(current_user.id)).first()
     user_obj.session_id = None
 
-    if (session_obj.user_count == 0):
-        # If there is no more users in the session
+    if session_obj.user_count == 0:
+        # If there is no users left in the session
 
         # Delete all songs that belong to the session
         Song.query.filter(Song.session_id == session_id_).delete()
@@ -168,12 +186,12 @@ def leave_session(session_id):
         # Delete the session
         Session.query.filter(Session.name == session_id_).delete()
 
-    elif (session_obj.host_id == user_obj.id):
+    elif session_obj.host_id == user_obj.id:
         # Case where the host leaves, need to reassign host privilege
 
         # Find the next user in the session after the host has left
         second_user = User.query.filter_by(session_id=session_id_).first()
-        session_obj.host_user=second_user.id
+        session_obj.host_user = second_user.id
 
     # Commit all changes
     db.session.commit()
@@ -187,6 +205,7 @@ def leave_session(session_id):
 def player_page(session_id):
     """Provides routing to the player page"""
     user_obj = User.query.filter_by(id=str(current_user.id)).first()
+    session_obj = Session.query.filter_by(name=session_id).first()
 
     if user_obj.session_id != str(session_id):
         # Handles the case where a user tries to join through the URL
@@ -212,7 +231,7 @@ def player_page(session_id):
         },
     ]
 
-    queue_list = Song.query.all()
+    queue_list = Song.query.filter_by(session_id=session_id).all()
     user_list = User.query.filter_by(session_id=session_id).all()
 
     """
@@ -225,7 +244,11 @@ def player_page(session_id):
         print(request.get_json())
     """
     return render_template(
-        "player.html", session_id=session_id, queue=queue_list, users=user_list
+        "player.html",
+        session_obj=session_obj,
+        session_id=session_id,
+        queue=queue_list,
+        users=user_list,
     )
 
 

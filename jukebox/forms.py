@@ -41,6 +41,8 @@ class LoginForm(FlaskForm):
     submit = SubmitField(label="Login")
 
 
-class SessionForm(FlaskForm):
+class JoinSessionForm(FlaskForm):
     """Will handle the transmission of a user from home page to session page"""
-    session_id = StringField(label="Enter 5 digit session ID")
+    session_field = StringField(label="", validators=[DataRequired()])
+    submit = SubmitField(label="Join session")
+    

@@ -40,10 +40,11 @@
 				{% for user in users %} <!-- Example of Jenga2 template for Python injection -->
 					<li class="users">
 						<span class="usertext" id="user1">{{ user.username }}</span>
+						{% if session_obj.host_user == user.id %}
+						<span class="crown">👑&#xFE0E;</span>
+						{% endif %}
 					</li>
 				{% endfor %}
-
-
 			</ul>
 		</div>
 		<!-- Start queue panel elements -->
