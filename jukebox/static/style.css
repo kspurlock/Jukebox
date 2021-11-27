@@ -365,6 +365,10 @@ a.youtubelink:hover { /* Just making it redder and bolder whatever */
 	padding-right: 24px;
 }
 
+.searchbutton {
+	display: none;
+}
+
 .searchgrid { /* 3 colums: title/artist, album, time */
 	grid-template-columns: [title] 6fr [album] 4fr [time] 50px;
 	display: grid;
@@ -591,7 +595,6 @@ a { /* no underlines by default */
 
 
 /*Button classes to match different notification types*/
-/*Please adjust the colours on these Kian I'm bad at it */
 .alert-danger {
 	background-color: #fc3682;
 	color: white;

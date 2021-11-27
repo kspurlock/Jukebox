@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<title>Jukebox: A music queue thing</title>
@@ -11,10 +12,10 @@
 </head>
 
 <body id="body_main">
-	
+
 	<div class="main">
 
-		<!-- Start user siderbar -->
+		<!-- Start user sidebar -->
 		<div class="sidebar">
 			<div>
 				<img class="jukelogo" alt="Jukebox logo" src="../static/images/jukelogo.svg">
@@ -22,9 +23,10 @@
 			<ul class="sidebutton">
 				<li class="buttonlabel">
 					<span class="oneline" id="createsession">{{ session_id }}</span>
+					<span class="oneline" style="display:none;" id="currentuser">{{ current_user.id }}</span>
 				</li>
 				<li class="buttonlabel">
-					<a class="linktext" href="{{ url_for('leave_session', session_id=session_id) }}"> 
+					<a class="linktext" href="{{ url_for('leave_session', session_id=session_id) }}">
 						<span class="oneline" id="leavesession">Leave session</span>
 					</a>
 				</li>
@@ -35,15 +37,15 @@
 			<div id="userlist-div">
 				<ul class="userlist">
 					{% for user in users %}
-						<li class="users">
-							<span class="usertext" id="user1">{{ user.username }}</span>
-							{% if session_obj.host_user == user.id %}
-							<span class="crown">👑&#xFE0E;</span>
-							{% endif %}
-						</li>
+					<li class="users">
+						<span class="usertext" id="user1">{{ user.username }}</span>
+						{% if session_obj.host_user == user.id %}
+						<span class="crown">👑&#xFE0E;</span>
+						{% endif %}
+					</li>
 					{% endfor %}
 				</ul>
-			</div> 
+			</div>
 		</div>
 		<!-- Start queue panel elements -->
 		<div class="queuepanel">
@@ -82,32 +84,29 @@
 					<span class="queuelength">{{song.length}}</span>
 				</li>
 				{% endfor %}
-				
-	    	</ul>
+
+			</ul>
 		</div>
 		<!-- Start search panel elements -->
 		<div class="searchpanel">
 			<li class="contentheader">
-				<span><input type="text" class="search" id="addsongs" placeholder="Search Spotify or paste YouTube URL"></span>
+				<form method="POST" id="searchform">
+					<span><input class="search" id="searchfield" name="searchfield" required type="text"
+							placeholder="Search Spotify"></span>
+					<span><input class="searchbutton" id="searchsubmit" name="searchsubmit" type="submit"></span>
+				</form>
 			</li>
-			<ul class="results">
-				<span class="resultsfor">Spotify results for "<em>igor</em>"</h1>
-				<li class="songs searchgrid">
-					<span class="searchinfo">Title</span>
-					<span class="searchinfo searchalbum">Album</span>
-					<span class="searchinfo queuelength">🕓&#xFE0E;</span>
-				</li>
-				<hr class="searchdivider">
-				<li class="songs searchgrid">
-					<ul class="titleartist">
-						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
-						<span class="queuetitle">IGOR'S THEME</span>
-						<span class="queueartist">Tyler, The Creator</span>
-					</ul>
-					<span class="searchalbum">IGOR</span>
-					<span class="queuelength">3:20</span>
-				</li>
-	    	</ul>
+			<div id="search-div">
+				<ul class="results">
+					<li class="songs searchgrid">
+						<span class="searchinfo">Title</span>
+						<span class="searchinfo searchalbum">Album</span>
+						<span class="searchinfo queuelength">🕓&#xFE0E;</span>
+					</li>
+					<hr class="searchdivider">
+					</li>
+				</ul>
+			</div>
 		</div>
 
 		<!-- Start bottom bar elements -->
@@ -133,28 +132,125 @@
 	<script src="{{url_for('static', filename='script.js')}}"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>
-		let session_name = document.getElementById("createsession").innerHTML.toString()
-		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-		$(function(){
-			window.setInterval(function(){
+		let session_name = document.getElementById("createsession").innerHTML.toString();
+		let user = document.getElementById("currentuser").innerHTML.toString();
+
+		$SCRIPT_ROOT = {{ request.script_root | tojson | safe }}; //This is not an error
+		$(function () {
+			window.setInterval(function () {
 				loadUserList()
-			}, 1000)
-		
+			}, 40000)
 
-		function loadUserList(){
-			$.ajax({
-				url:$SCRIPT_ROOT+"/player/"+session_name+"/update-userlist",
-				type:"POST",
-				dataType:"json",
-				success: function(data){
-					$("#userlist-div").replaceWith(data[1]);
-				}
+			function loadUserList() {
+				$.ajax({
+					url: $SCRIPT_ROOT + "/player/" + session_name + "/update-userlist",
+					type: "POST",
+					dataType: "json",
+					success: function (data) {
+						$("#userlist-div").replaceWith(data[1]);
+					}
+				});
+			} //end loadUserList
+		}); //end function
 
+		function searchSong() {
+			$("#searchform").on("submit", function (event) {
+				$.ajax({
+					url: $SCRIPT_ROOT + "/player/" + session_name + "/search-song",
+					type: "POST",
+					data: {
+						songQuery: $("#searchfield").val(),
+						sentUser: user
+					}
+				})
+					.done(function (data) {
+						$("#search-div").replaceWith(data[1])
+					}); //end done
+				event.preventDefault();
+			}); //end on
+		};
+
+		function songSelected() {
+			$(".searchelement").on("click", function (event) {
+				$.ajax({
+					url: $SCRIPT_ROOT + "/player/" + session_name + "/add-song",
+					type: "POST",
+					context: this,
+					data: {
+						song_id: $(this).attr("id")
+					}
+				})
+					.done(function (data) {
+						console.log(data[1]);
+					}); //end done
+				event.stopImmediatePropagation();
+				event.preventDefault();
+			}); //end on
+		}; //end songSelected()
+
+		/*
+		function songSelected() {
+			$(".searchelement").click(function(event) {
+				event.preventDefault();
+				$.ajax({
+					url: $SCRIPT_ROOT + "/player/" + session_name + "/add-song",
+					type: "POST",
+					async: false,
+					data: {
+						song_id: $(this).attr("id")
+					},
+					success: function(data){
+						console.log(data[1]);
+					},
+					error: function(data) {
+						console.log("error")
+					}
+				});
 			});
+		};
+		*/
+		/*
+		function songSelected() {
+			$.ajax({
+				url: $SCRIPT_ROOT + "/player/" + session_name + "/add-song",
+				type: 'POST',
+				async: true,
+				dataType: 'json',
+				data: {
+					song_id: 0
+				},
+				success: function (data) {
+					$("#"+$(this).attr("id")).one('click', clickHandler);
+					console.log($(this).attr("id"))
+				},
+				error: function () { }
+			});
+			e.stopImmediatePropagation();
+			return false;
 		}
+		*/
 
-		});
+		$(document).ready(function () {
+			searchSong();
+		}
+		); //end ready
 
+
+
+		/*
+		$(document).ready(function(){
+			$(".searchelement").click(function(event)
+			{
+				console.log("Hello!")
+				$(".searchelement").style("color", "black")
+				$(this).style("background-color", "yellow")
+				let id = $(this).attr('id')
+				console.log(id)
+			}); //end on
+			} //end anon function
+		); //end ready
+		*/
 	</script>
 </body>
+
 </html>

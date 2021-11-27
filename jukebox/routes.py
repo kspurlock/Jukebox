@@ -127,7 +127,7 @@ def spotify_add():
     get_user_access(current_user.username)
 
 
-@app.route("/spotify-success/")  # There is going to be a request here (code?v=...)
+@app.route("/spotify-success/")  # There is going to be a REST variable here (code?v=...)
 @login_required
 def spotify_success():
     """May need this to get the spotify user key on redirect"""
@@ -173,7 +173,7 @@ def create_session():
         return redirect(url_for("player_page", session_id=new_session_name))
 
     except IntegrityError:
-        flash("Could not create session.", category="danger")
+        flash("Could not create session.", category="info")
         return redirect(url_for("home_page"))
 
 
@@ -265,14 +265,35 @@ def player_page(session_id):
 
 @app.route("/player/<session_id>/update-userlist", methods=["POST"])
 def update_userlist(session_id):
-    print(session_id)
     user_list = User.query.filter_by(session_id=str(session_id)).all()
     session_obj = Session.query.filter_by(name=str(session_id)).first()
-    print(user_list)
 
     return jsonify("", render_template("player-userlist.html", users=user_list, session_obj=session_obj))
 
+@app.route("/player/<session_id>/search-song", methods=["POST"])
+def search_song(session_id):
+    song_search = []
+    for i in range(10):
+        song_test = {
+        "id": i,
+        "title": "test_title",
+        "artist": "test_artist",
+        "album": "test_album",
+        "length": str(random.randint(0,10)),
+        "image_url": "https://www.w3schools.com/images/w3schools_green.jpg",
+        "playback_uri": "none"}
+        song_search.append(song_test)
+    
 
+    # Who sent the request
+    user_obj = User.query.filter_by(id=int(request.form["sentUser"])).first()
+    return jsonify("", render_template("player-searchlist.html", song_search=song_search))
+
+@app.route("/player/<session_id>/add-song", methods=["POST"])
+def add_song(session_id):
+    print(request.form['song_id'])
+
+    return jsonify("", "yep")
 
 
 @app.errorhandler(404)

@@ -61,6 +61,9 @@ class Song(db.Model):
     album = db.Column(db.String(length=75), nullable=True, unique=False)
     queued_by = db.Column(db.String(length=50), nullable=False, unique=False)
     length = db.Column(db.String(length=20), nullable=True, unique=False)
+    is_search = db.Column(db.Boolean(), nullable=False, unique=False)
+    album_image_url = db.Column(db.String(), nullable=True, unique=False)
+
     session_id = db.Column(
         db.String(length=5), db.ForeignKey("session.name")
     )  # Foreign key is session_name (Not the id number)

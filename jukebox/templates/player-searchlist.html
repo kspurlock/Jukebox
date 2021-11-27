@@ -1,0 +1,24 @@
+<div id="search-div">
+    <ul class="results">
+        <li class="songs searchgrid">
+            <span class="searchinfo">Title</span>
+            <span class="searchinfo searchalbum">Album</span>
+            <span class="searchinfo queuelength">🕓&#xFE0E;</span>
+        </li>
+        <hr class="searchdivider">
+        <!--Need to modify this and dynamically update it-->
+        {% for song in song_search %}
+        <button class="searchelement" id='{{ song.id }}' playback_uri='{{ song.playback_uri }}' onclick='songSelected()'>
+            <li class="songs searchgrid">
+                <ul class="titleartist">
+                    <img class="queueimage" src='{{ song.image_url }}'>
+                    <span class="queuetitle">{{ song.title }}</span>
+                    <span class="queueartist">{{ song.artist }}</span>
+                </ul>
+                <span class="searchalbum">{{ song.album }}</span>
+                <span class="queuelength">{{ song.length }}</span>
+            </li>
+        </button>
+        {% endfor %}
+    </ul>
+</div>
