@@ -5,7 +5,7 @@ from flask import (
     url_for,
     flash,
     request,
-    g
+    session
 )
 from jukebox.models import User, Session, Song
 from jukebox import db
@@ -20,55 +20,64 @@ import spotipy
 import webbrowser
 import spotipy.util as util
 from json.decoder import JSONDecodeError
+import requests
+
+API_BASE = "https://accounts.spotify.com"
+REDIRECT_URI = "http://127.0.0.1:9874/spotify-callback/"
+SCOPE = "user-read-private user-read-playback-state user-modify-playback-state"
+SHOW_DIALOG = True
+CLI_ID = "d5bf099821e44c9ebf883855e178c731"
+CLI_SECRET = "8ac58375e2474fb096fe663d727e9ee2"
 
 """Definitely need to remove these at some point"""
-os.environ["SPOTIPY_CLIENT_ID"] = "d5bf099821e44c9ebf883855e178c731"
-os.environ["SPOTIPY_CLIENT_SECRET"] = "8ac58375e2474fb096fe663d727e9ee2"
-os.environ["SPOTIPY_REDIRECT_URI"] = "http://127.0.0.1:5000/spotify-success/"
 
 @app.route("/spotify-add")
 @login_required
 def spotify_add():
     """Initial route that leads from the home page to the spotify permission page"""
-    get_user_access(str(current_user.username))
+    auth_url = f'{API_BASE}/authorize?client_id={CLI_ID}&response_type=code&redirect_uri={REDIRECT_URI}&scope={SCOPE}&show_dialog={SHOW_DIALOG}'
+    print(auth_url)
+    return redirect(auth_url)
 
-@app.route("/spotify-success/")  # There is going to be a REST variable here (code?v=...)
+@app.route("/spotify-callback/")  # There is going to be a REST variable here (code?v=...)
 @login_required
-def spotify_success():
-    """May need this to get the spotify user key on redirect"""
-    try:
-        query_string = request.args["code"]
-        try:
-            user_obj = User.query.filter_by(id=int(current_user.id)).first()
-            user_obj.spotify_key = query_string
-            db.session.commit()
-            flash("Spotify account linked!", category="success")
-            return redirect(url_for("home_page"))
+def spotify_callback():
+    code = request.args.get('code')
 
-        except IntegrityError:  # Occurs when a Spotify key has been linked to another account
-            flash("Spotify cannot be linked: Linked elsewhere.", category="danger")
-            return redirect(url_for("home_page"))
+    auth_token_url = f"{API_BASE}/api/token"
+    res = requests.post(auth_token_url, data={
+        "grant_type":"authorization_code",
+        "code":code,
+        "redirect_uri":"http://127.0.0.1:9874/spotify-callback/",
+        "client_id": CLI_ID,
+        "client_secret": CLI_SECRET
+        })
 
-    except BadRequestKeyError:  # Occurs when the user denies the Spotify permission page
-        flash("Spotify cannot be linked: Permission Denied", category="info")
-        return redirect(url_for("home_page"))
+    res_body = res.json()
+    access_token = res_body.get("access_token")
+    
+    user_obj = User.query.filter_by(id=int(current_user.id)).first()
+    user_obj.spotify_key = access_token
+    db.session.commit()
 
-def return_formatted_query(user_id, searchQuery):
+    flash("Spotify added successfully!", category="success")
+    return redirect(url_for("home_page"))
+
+def return_formatted_query(user_id, searchQuery, limit=20):
     user_obj = User.query.filter_by(id=int(user_id)).first()
     user_token = user_obj.spotify_key
-    print(user_token)
     spotifyObject = spotipy.Spotify(auth=user_token)
 
-    searchResults = spotifyObject.search(searchQuery, limit=10, offset=0, type="track")
-    formattedResults = []
+    searchResults = spotifyObject.search(searchQuery, limit=limit, offset=0, type="track")
 
+    formattedResults = []
     for song, idx in zip(searchResults["tracks"]["items"], range(len(searchResults["tracks"]["items"]))):
         dic = {
             "id": idx,
             "title": song["name"],
             "artist": song["artists"][0]["name"],
             "album": song["album"]["name"],
-            "length": song["duration_ms"],
+            "length": convertTime(song["duration_ms"]),
             "album_image_url": song["album"]["images"][2]["url"],
             "playback_uri":  song["uri"]
             }
@@ -76,14 +85,18 @@ def return_formatted_query(user_id, searchQuery):
 
     return formattedResults
 
+def startPlayback(user_id, session_id, song_title, trackURI,):
+    user_obj = User.query.filter_by(id=int(user_id)).first() # Need to loop through this for all users in session and play
+    user_token = user_obj.spotify_key
+    spotifyObject = spotipy.Spotify(auth=user_token)
+
+    spotifyObject.start_playback(uris=[trackURI])
+
+    return
 
 
-def get_user_access(username):
-    scope = "user-read-playback-state user-modify-playback-state"
+def convertTime(ms):
+    seconds=int((ms/1000)%60)
+    minutes=int((ms/(1000*60))%60)
 
-    util.prompt_for_user_token(
-        username,
-        scope,
-    )
-
-    # Should take us to spotify-success/<key> route
+    return (f"{minutes}:{seconds}")

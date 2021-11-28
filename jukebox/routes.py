@@ -11,6 +11,7 @@ from flask import (
 )
 from jukebox.forms import RegisterForm, LoginForm, JoinSessionForm
 from jukebox.models import User, Session, Song
+from jukebox.spot import startPlayback
 from jukebox import db
 from flask_login import login_user, logout_user, login_required, current_user
 from jukebox.spot import return_formatted_query
@@ -44,11 +45,12 @@ def home_page():
                     return redirect(
                         url_for("player_page", session_id=form.session_field.data)
                     )
-                    
-                except AttributeError as e:
-                    flash("You need to be logged in to join a session!", category="info")
-                    return redirect(url_for("login_page"))
 
+                except AttributeError as e:
+                    flash(
+                        "You need to be logged in to join a session!", category="info"
+                    )
+                    return redirect(url_for("login_page"))
 
     elif request.method == "GET":
         return render_template("home.html", session_form=form)
@@ -92,6 +94,7 @@ def logout_page():
     flash("You have been logged out, see ya!", category="info")
     return redirect(url_for("home_page"))
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
     """Provides routing to the registration page"""
@@ -104,7 +107,7 @@ def register_page():
             password=form.password_first.data,  # Password param is the setter property
         )
 
-        try: 
+        try:
             db.session.add(user_to_create)
             db.session.commit()
             login_user(user_to_create)  # Automatically login after registration
@@ -116,6 +119,7 @@ def register_page():
         for err_msg in form.errors.values():
             flash(f"Error on creating a user: {err_msg[0]}")
     return render_template("register.html", form=form)
+
 
 @app.route("/create-session")
 @login_required
@@ -232,18 +236,26 @@ def player_page(session_id):
         users=user_list,
     )
 
+
 @app.route("/player/<session_id>/update-userlist", methods=["POST"])
 def update_userlist(session_id):
     user_list = User.query.filter_by(session_id=str(session_id)).all()
     session_obj = Session.query.filter_by(name=str(session_id)).first()
 
-    return jsonify("", render_template("player-userlist.html", users=user_list, session_obj=session_obj))
+    return jsonify(
+        "",
+        render_template(
+            "player-userlist.html", users=user_list, session_obj=session_obj
+        ),
+    )
+
 
 @app.route("/player/<session_id>/update-queuelist", methods=["POST"])
 def update_queuelist(session_id):
     song_list = Song.query.filter_by(session_id=str(session_id)).all()
 
-    return jsonify("", render_template("player-queuelist.html", songs=song_list))
+    return jsonify("", render_template("player-queuelist.html", queue=song_list))
+
 
 @app.route("/player/<session_id>/search-song", methods=["POST"])
 def search_song(session_id):
@@ -263,19 +275,43 @@ def search_song(session_id):
     sent_by = request.values.get("sentUser")
     song_query = request.values.get("songQuery")
     song_search = return_formatted_query(sent_by, song_query)
-    
 
     # Who sent the request
     user_obj = User.query.filter_by(id=int(request.form["sentUser"])).first()
-    return jsonify("", render_template("player-searchlist.html", song_search=song_search))
+    return jsonify(
+        "", render_template("player-searchlist.html", song_search=song_search)
+    )
+
 
 @app.route("/player/<session_id>/add-song", methods=["POST"])
 def add_song(session_id):
-    print(request.values.get("songID"))
-    print(request.values.get("sentUser"))
-    print(request.values.get("songPlayback"))
 
-    return jsonify("", "yep")
+    """Note: can just search again for a single query with the track URI"""
+    #song_id = request.values.get("songID")
+    song_title = request.values.get("songTitle")
+    sent_user = request.values.get("sentUser")
+    song_playback = request.values.get("songPlayback")
+
+    startPlayback(sent_user, session_id, song_title, song_playback)
+
+    searchResult = return_formatted_query(current_user.id, song_title, limit=1)[0] # Likely a more efficient way to do this than re-searching
+
+    song_to_create = Song(title=searchResult["title"],
+    artist=searchResult["artist"],
+    album=searchResult["album"],
+    queued_by=sent_user,
+    length=searchResult["length"],
+    album_image_url=searchResult["album_image_url"],
+    playback_uri=searchResult["playback_uri"],
+    session_id=str(session_id)
+    )
+
+    db.session.add(song_to_create)
+    db.session.commit()
+
+    song_list = Song.query.filter_by(session_id=str(session_id)).all()
+
+    return jsonify("", render_template("player-queuelist.html", queue=song_list))
 
 
 @app.errorhandler(404)
@@ -283,7 +319,9 @@ def not_found_error(err_msg):
     flash(f"{err_msg}")
     return render_template("404.html")
 
+
 """Test routes go down here"""
+
 
 @app.route("/test-route", methods=["GET", "POST"])
 def test_route():
@@ -291,10 +329,11 @@ def test_route():
     if request.method == "POST":
         data = request.form.get("field1")
         print(data)
-    if request.method =="GET":
+    if request.method == "GET":
         print(1)
 
     return render_template("test_page.html")
+
 
 @app.route("/404-error-test")
 def error_page_test():

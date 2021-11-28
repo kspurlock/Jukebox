@@ -6,4 +6,4 @@ from jukebox import app
 # - click on https://127.0.0.1:5000/ in terminal
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=9874, debug=True)

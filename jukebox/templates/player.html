@@ -68,7 +68,7 @@
 							<span class="queuetitle">{{ song.title }}</span>
 							<span class="queueartist">{{ song.artist }}</span>
 						</ul>
-						<span class="queuealbum">{{ song.album_name }}</span>
+						<span class="queuealbum">{{ song.album }}</span>
 						<span class="queuedby">{{ song.queued_by }}</span>
 						<span class="queuelength">{{ song.length }}</span>
 					</li>
@@ -127,7 +127,7 @@
 		$(function () {
 			window.setInterval(function () {
 				loadUserList();
-			}, 40000)
+			}, 5000)
 
 			function loadUserList() {
 				$.ajax({
@@ -139,6 +139,17 @@
 					}
 				});
 			}; //end loadUserList
+
+			function loadQueueList() {
+				$.ajax({
+				url: $SCRIPT_ROOT + "/player/" + session_name + "/update-queuelist",
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					$("#queuelist-div").replaceWith(data[1]);
+				}
+				});
+			}; //end loadQueueList
 		}); //end function
 
 		function searchSong() {
@@ -166,13 +177,14 @@
 					context: this,
 					data: {
 						songID: $(this).attr("id"),
+						songTitle: $(this).attr("title"),
 						songPlayback: $(this).attr("playback_uri"),
 						sentUser: user
 					},
 				})
 					.done(function (data) {
-						console.log(data[1]);
-						loadQueueList();
+						$("#queuelist-div").replaceWith(data[1])
+						//loadQueueList();
 					}); //end done
 					
 				event.stopImmediatePropagation();
@@ -180,16 +192,7 @@
 			}); //end on
 		}; //end songSelected()
 
-		function loadQueueList() {
-				$.ajax({
-				url: $SCRIPT_ROOT + "/player/" + session_name + "/update-queuelist",
-				type: "POST",
-				dataType: "json",
-				success: function (data) {
-					$("#queuelist-div").replaceWith(data[1]);
-				}
-				});
-			}; //end loadQueueList
+		
 
 		/*
 		function songSelected() {
