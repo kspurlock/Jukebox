@@ -1,4 +1,3 @@
-from sqlalchemy.sql.elements import Null
 from werkzeug.exceptions import BadRequestKeyError
 from jukebox import app
 from flask import (
@@ -6,18 +5,18 @@ from flask import (
     redirect,
     url_for,
     flash,
-    get_flashed_messages,
     request,
     jsonify,
     abort,
 )
 from jukebox.forms import RegisterForm, LoginForm, JoinSessionForm
-from jukebox.models import User, Session, Song, load_user
+from jukebox.models import User, Session, Song
 from jukebox import db
 from flask_login import login_user, logout_user, login_required, current_user
-from jukebox.spot import get_user_access
+from jukebox.spot import return_formatted_query
 from sqlalchemy.exc import IntegrityError
 import random
+import time
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -93,7 +92,6 @@ def logout_page():
     flash("You have been logged out, see ya!", category="info")
     return redirect(url_for("home_page"))
 
-
 @app.route("/register", methods=["GET", "POST"])
 def register_page():
     """Provides routing to the registration page"""
@@ -119,39 +117,10 @@ def register_page():
             flash(f"Error on creating a user: {err_msg[0]}")
     return render_template("register.html", form=form)
 
-
-@app.route("/spotify-add")
-@login_required
-def spotify_add():
-    """Initial route that leads from the home page to the spotify permission page"""
-    get_user_access(current_user.username)
-
-
-@app.route("/spotify-success/")  # There is going to be a REST variable here (code?v=...)
-@login_required
-def spotify_success():
-    """May need this to get the spotify user key on redirect"""
-    try:
-        query_string = request.args["code"]
-        try:
-            user_obj = User.query.filter_by(id=int(current_user.id)).first()
-            user_obj.spotify_key = query_string
-            db.session.commit()
-            flash("Spotify account linked!", category="success")
-            return redirect(url_for("home_page"))
-
-        except IntegrityError:  # Occurs when a Spotify key has been linked to another account
-            flash("Spotify cannot be linked: Linked elsewhere.", category="danger")
-            return redirect(url_for("home_page"))
-
-    except BadRequestKeyError:  # Occurs when the user denies the Spotify permission page
-        flash("Spotify cannot be linked: Permission Denied", category="info")
-        return redirect(url_for("home_page"))
-
-
 @app.route("/create-session")
 @login_required
 def create_session():
+    random.seed(time.time())
     new_session_name = str(random.randint(10000, 99999))
     duplicate = Session.query.filter_by(name=new_session_name).first()
 
@@ -270,8 +239,15 @@ def update_userlist(session_id):
 
     return jsonify("", render_template("player-userlist.html", users=user_list, session_obj=session_obj))
 
+@app.route("/player/<session_id>/update-queuelist", methods=["POST"])
+def update_queuelist(session_id):
+    song_list = Song.query.filter_by(session_id=str(session_id)).all()
+
+    return jsonify("", render_template("player-queuelist.html", songs=song_list))
+
 @app.route("/player/<session_id>/search-song", methods=["POST"])
 def search_song(session_id):
+    """
     song_search = []
     for i in range(10):
         song_test = {
@@ -280,9 +256,13 @@ def search_song(session_id):
         "artist": "test_artist",
         "album": "test_album",
         "length": str(random.randint(0,10)),
-        "image_url": "https://www.w3schools.com/images/w3schools_green.jpg",
+        "album_image_url": "https://i.scdn.co/image/ab67616d0000b273ec743375ac494655ed0db2fb",
         "playback_uri": "none"}
         song_search.append(song_test)
+    """
+    sent_by = request.values.get("sentUser")
+    song_query = request.values.get("songQuery")
+    song_search = return_formatted_query(sent_by, song_query)
     
 
     # Who sent the request
@@ -291,7 +271,9 @@ def search_song(session_id):
 
 @app.route("/player/<session_id>/add-song", methods=["POST"])
 def add_song(session_id):
-    print(request.form['song_id'])
+    print(request.values.get("songID"))
+    print(request.values.get("sentUser"))
+    print(request.values.get("songPlayback"))
 
     return jsonify("", "yep")
 

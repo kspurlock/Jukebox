@@ -59,32 +59,21 @@
 					<span class="queueinfo queuelength">🕓&#xFE0E;</span>
 				</li>
 				<hr class="queuedivider">
-				<li class="songs queuegrid" id="song1">
-					<span class="queuenumber">1</span>
-					<ul class="titleartist">
-						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
-						<span class="queuetitle">Blah</span>
-						<span class="queueartist">Blah</span>
-					</ul>
-					<span class="queuealbum">Blah</span>
-					<span class="queuedby">blah</span>
-					<span class="queuelength">6:68</span>
-				</li>
-
-				{% for song in queue %}
-				<li class="songs queuegrid" id="song1">
-					<span class="queuenumber">1</span>
-					<ul class="titleartist">
-						<img class="queueimage" src="../static/images/jukeplaceholder.svg">
-						<span class="queuetitle">{{song.song_name}}</span>
-						<span class="queueartist">{{song.artist_name}}</span>
-					</ul>
-					<span class="queuealbum">{{song.album_name}}</span>
-					<span class="queuedby">{{song.queued_by}}</span>
-					<span class="queuelength">{{song.length}}</span>
-				</li>
-				{% endfor %}
-
+				<div id="queuelist-div">
+					{% for song in queue %}
+					<li class="songs queuegrid" id="song1">
+						<span class="queuenumber">{{ song.id }}</span>
+						<ul class="titleartist">
+							<img class="queueimage" src="{{ song.album_image_url }}" alt="../static/images/jukeplaceholder.svg">
+							<span class="queuetitle">{{ song.title }}</span>
+							<span class="queueartist">{{ song.artist }}</span>
+						</ul>
+						<span class="queuealbum">{{ song.album_name }}</span>
+						<span class="queuedby">{{ song.queued_by }}</span>
+						<span class="queuelength">{{ song.length }}</span>
+					</li>
+					{% endfor %}
+				</div>
 			</ul>
 		</div>
 		<!-- Start search panel elements -->
@@ -104,7 +93,6 @@
 						<span class="searchinfo queuelength">🕓&#xFE0E;</span>
 					</li>
 					<hr class="searchdivider">
-					</li>
 				</ul>
 			</div>
 		</div>
@@ -129,7 +117,7 @@
 		</div>
 	</div>
 
-	<script src="{{url_for('static', filename='script.js')}}"></script>
+	<!--<script src="{{url_for('static', filename='script.js')}}"></script>-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>
 		let session_name = document.getElementById("createsession").innerHTML.toString();
@@ -138,7 +126,7 @@
 		$SCRIPT_ROOT = {{ request.script_root | tojson | safe }}; //This is not an error
 		$(function () {
 			window.setInterval(function () {
-				loadUserList()
+				loadUserList();
 			}, 40000)
 
 			function loadUserList() {
@@ -150,7 +138,7 @@
 						$("#userlist-div").replaceWith(data[1]);
 					}
 				});
-			} //end loadUserList
+			}; //end loadUserList
 		}); //end function
 
 		function searchSong() {
@@ -177,16 +165,31 @@
 					type: "POST",
 					context: this,
 					data: {
-						song_id: $(this).attr("id")
-					}
+						songID: $(this).attr("id"),
+						songPlayback: $(this).attr("playback_uri"),
+						sentUser: user
+					},
 				})
 					.done(function (data) {
 						console.log(data[1]);
+						loadQueueList();
 					}); //end done
+					
 				event.stopImmediatePropagation();
 				event.preventDefault();
 			}); //end on
 		}; //end songSelected()
+
+		function loadQueueList() {
+				$.ajax({
+				url: $SCRIPT_ROOT + "/player/" + session_name + "/update-queuelist",
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					$("#queuelist-div").replaceWith(data[1]);
+				}
+				});
+			}; //end loadQueueList
 
 		/*
 		function songSelected() {

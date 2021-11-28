@@ -1,0 +1,15 @@
+<div id="queuelist-div">
+    {% for song in queue %}
+    <li class="songs queuegrid" id="song1">
+        <span class="queuenumber">{{ song.id }}</span>
+        <ul class="titleartist">
+            <img class="queueimage" src="{{ song.album_image_url }}" alt="../static/images/jukeplaceholder.svg">
+            <span class="queuetitle">{{ song.title }}</span>
+            <span class="queueartist">{{ song.artist }}</span>
+        </ul>
+        <span class="queuealbum">{{ song.album_name }}</span>
+        <span class="queuedby">{{ song.queued_by }}</span>
+        <span class="queuelength">{{ song.length }}</span>
+    </li>
+    {% endfor %}
+</div>

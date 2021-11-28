@@ -7,14 +7,16 @@ import webbrowser
 import spotipy.util as util
 from json.decoder import JSONDecodeError
 
-username = sys.argv[1] # Specifies cache file association
+os.environ["SPOTIPY_CLIENT_ID"] = "d5bf099821e44c9ebf883855e178c731"
+os.environ["SPOTIPY_CLIENT_SECRET"] = "8ac58375e2474fb096fe663d727e9ee2"
+os.environ["SPOTIPY_REDIRECT_URI"] = "http://127.0.0.1:5000/spotify-success/"
+
+username = "kyle" # Specifies cache file association
 scope = "user-read-private user-read-playback-state user-modify-playback-state" # This is the app permissions
 
-try:
-    token = util.prompt_for_user_token(username, scope)
-except (AttributeError, JSONDecodeError):
-    os.remove(f".cache-{username}")
-    token = util.prompt_for_user_token(username, scope)
+token = util.prompt_for_user_token(username, scope)
+#%%
+
 #%%
 spotifyObject = spotipy.Spotify(auth=token)
 devices = spotifyObject.devices()
@@ -28,11 +30,29 @@ track = track["item"]["name"]
 
 if artist != "":
     print("Currently playing " + artist + " - " + track)
-
+#%%
 user = spotifyObject.current_user()
 displayName = user["display_name"]
 follower = user["followers"]["total"]
 
+searchQuery = "circle the drain"
+searchResults = spotifyObject.search(searchQuery, limit=10, offset=0, type="track")
+
+formattedResults = []
+for song, idx in zip(searchResults["tracks"]["items"], range(len(searchResults["tracks"]["items"]))):
+    dic = {
+        "id": idx,
+        "title": song["name"],
+        "artist": song["artists"][0]["name"],
+        "album": song["album"]["name"],
+        "length": song["duration_ms"],
+        "album_image_url": song["album"]["images"][2]["url"],
+        "playback_uri":  song["uri"]
+        }
+    formattedResults.append(dic)
+
+formattedResults = formattedResults[0]
+"""
 while True:
     print("\n>>>Welcome to Spotify " + displayName + " :)")
     print("\n>>>You have " + str(follower) + " followers.")
@@ -42,7 +62,7 @@ while True:
 
     if choice == "0":
         searchQuery = input("\nOk, what's their name?: ")
-        searchResults = spotifyObject.search(searchQuery, 1, 0, "artist")
+        searchResults = spotifyObject.search(searchQuery, limit=10, offset=0, type="track")
 
         artist = searchResults['artists']['items'][0]
         print(artist['name'])
@@ -85,4 +105,4 @@ while True:
     if choice == "1":
         break
     
-
+"""

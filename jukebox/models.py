@@ -13,6 +13,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
     spotify_key = db.Column(db.String(), nullable=True, unique=True)
+    spotify_refresh = db.Column(db.String(), nullable=True, unique=True)
     session_id = db.Column(
         db.String(length=5), db.ForeignKey("session.name")
     )  # Foreign key is session_name (Not the id number)
@@ -56,13 +57,13 @@ class Session(db.Model):
 
 class Song(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(length=75), nullable=False, unique=False)
+    title = db.Column(db.String(length=75), nullable=False, unique=False)
     artist = db.Column(db.String(length=75), nullable=True, unique=False)
     album = db.Column(db.String(length=75), nullable=True, unique=False)
     queued_by = db.Column(db.String(length=50), nullable=False, unique=False)
     length = db.Column(db.String(length=20), nullable=True, unique=False)
-    is_search = db.Column(db.Boolean(), nullable=False, unique=False)
     album_image_url = db.Column(db.String(), nullable=True, unique=False)
+    playback_uri = db.Column(db.String(), nullable = False, unique=False)
 
     session_id = db.Column(
         db.String(length=5), db.ForeignKey("session.name")

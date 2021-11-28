@@ -11,7 +11,7 @@
         <button class="searchelement" id='{{ song.id }}' playback_uri='{{ song.playback_uri }}' onclick='songSelected()'>
             <li class="songs searchgrid">
                 <ul class="titleartist">
-                    <img class="queueimage" src='{{ song.image_url }}'>
+                    <img class="queueimage" src="{{ song.album_image_url }}" alt="../static/images/jukeplaceholder.svg">
                     <span class="queuetitle">{{ song.title }}</span>
                     <span class="queueartist">{{ song.artist }}</span>
                 </ul>
