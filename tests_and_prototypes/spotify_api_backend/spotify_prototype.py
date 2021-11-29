@@ -9,9 +9,9 @@ from json.decoder import JSONDecodeError
 
 os.environ["SPOTIPY_CLIENT_ID"] = "d5bf099821e44c9ebf883855e178c731"
 os.environ["SPOTIPY_CLIENT_SECRET"] = "8ac58375e2474fb096fe663d727e9ee2"
-os.environ["SPOTIPY_REDIRECT_URI"] = "http://127.0.0.1:5000/spotify-success/"
+os.environ["SPOTIPY_REDIRECT_URI"] = "http://127.0.0.1:9874/spotify-callback/"
 
-username = "kyle" # Specifies cache file association
+username = "test" # Specifies cache file association
 scope = "user-read-private user-read-playback-state user-modify-playback-state" # This is the app permissions
 
 token = util.prompt_for_user_token(username, scope)
@@ -50,8 +50,9 @@ for song, idx in zip(searchResults["tracks"]["items"], range(len(searchResults["
         "playback_uri":  song["uri"]
         }
     formattedResults.append(dic)
-
-formattedResults = formattedResults[0]
+    
+song = formattedResults[1]
+spotifyObject.start_playback(uris=[song["playback_uri"]])
 """
 while True:
     print("\n>>>Welcome to Spotify " + displayName + " :)")

@@ -12,7 +12,6 @@
 </head>
 
 <body id="body_main">
-
 	<div class="main">
 
 		<!-- Start user sidebar -->
@@ -193,69 +192,10 @@
 		}; //end songSelected()
 
 		
-
-		/*
-		function songSelected() {
-			$(".searchelement").click(function(event) {
-				event.preventDefault();
-				$.ajax({
-					url: $SCRIPT_ROOT + "/player/" + session_name + "/add-song",
-					type: "POST",
-					async: false,
-					data: {
-						song_id: $(this).attr("id")
-					},
-					success: function(data){
-						console.log(data[1]);
-					},
-					error: function(data) {
-						console.log("error")
-					}
-				});
-			});
-		};
-		*/
-		/*
-		function songSelected() {
-			$.ajax({
-				url: $SCRIPT_ROOT + "/player/" + session_name + "/add-song",
-				type: 'POST',
-				async: true,
-				dataType: 'json',
-				data: {
-					song_id: 0
-				},
-				success: function (data) {
-					$("#"+$(this).attr("id")).one('click', clickHandler);
-					console.log($(this).attr("id"))
-				},
-				error: function () { }
-			});
-			e.stopImmediatePropagation();
-			return false;
-		}
-		*/
-
 		$(document).ready(function () {
 			searchSong();
 		}
 		); //end ready
-
-
-
-		/*
-		$(document).ready(function(){
-			$(".searchelement").click(function(event)
-			{
-				console.log("Hello!")
-				$(".searchelement").style("color", "black")
-				$(this).style("background-color", "yellow")
-				let id = $(this).attr('id')
-				console.log(id)
-			}); //end on
-			} //end anon function
-		); //end ready
-		*/
 	</script>
 </body>
 

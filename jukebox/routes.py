@@ -216,18 +216,9 @@ def player_page(session_id):
         },
     ]
 
-    queue_list = Song.query.filter_by(session_id=session_id).all()
-    user_list = User.query.filter_by(session_id=session_id).all()
+    queue_list = Song.query.filter_by(session_id=str(session_id)).all()
+    user_list = User.query.filter_by(session_id=str(session_id)).all()
 
-    """
-    #GET request for JS file
-    if request.method == 'GET':
-        return jsonify()
-
-    #POST request for JS file
-    if request.method == 'POST':
-        print(request.get_json())
-    """
     return render_template(
         "player.html",
         session_obj=session_obj,
@@ -239,6 +230,8 @@ def player_page(session_id):
 
 @app.route("/player/<session_id>/update-userlist", methods=["POST"])
 def update_userlist(session_id):
+    """Route called by player page to update the userlist with new information"""
+
     user_list = User.query.filter_by(session_id=str(session_id)).all()
     session_obj = Session.query.filter_by(name=str(session_id)).first()
 
@@ -252,6 +245,8 @@ def update_userlist(session_id):
 
 @app.route("/player/<session_id>/update-queuelist", methods=["POST"])
 def update_queuelist(session_id):
+    """Route called by player page to update the userlist with new information"""
+
     song_list = Song.query.filter_by(session_id=str(session_id)).all()
 
     return jsonify("", render_template("player-queuelist.html", queue=song_list))
@@ -290,6 +285,7 @@ def add_song(session_id):
     #song_id = request.values.get("songID")
     song_title = request.values.get("songTitle")
     sent_user = request.values.get("sentUser")
+    user_obj = User.query.filter_by(id=int(sent_user)).first()
     song_playback = request.values.get("songPlayback")
 
     startPlayback(sent_user, session_id, song_title, song_playback)
@@ -299,7 +295,7 @@ def add_song(session_id):
     song_to_create = Song(title=searchResult["title"],
     artist=searchResult["artist"],
     album=searchResult["album"],
-    queued_by=sent_user,
+    queued_by=user_obj.username,
     length=searchResult["length"],
     album_image_url=searchResult["album_image_url"],
     playback_uri=searchResult["playback_uri"],

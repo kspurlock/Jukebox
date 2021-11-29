@@ -36,15 +36,17 @@ CLI_SECRET = "8ac58375e2474fb096fe663d727e9ee2"
 def spotify_add():
     """Initial route that leads from the home page to the spotify permission page"""
     auth_url = f'{API_BASE}/authorize?client_id={CLI_ID}&response_type=code&redirect_uri={REDIRECT_URI}&scope={SCOPE}&show_dialog={SHOW_DIALOG}'
-    print(auth_url)
     return redirect(auth_url)
 
 @app.route("/spotify-callback/")  # There is going to be a REST variable here (code?v=...)
 @login_required
 def spotify_callback():
-    code = request.args.get('code')
+    """Captures the refresh and access tokens from the Spotify API and appends them to the User's db entry"""
+    code = request.args.get('code') # Capture the refresh token from query string
 
-    auth_token_url = f"{API_BASE}/api/token"
+    auth_token_url = f"{API_BASE}/api/token" # Spotify resource URL to retrieve User token
+
+    # Post the following json information to the Spotify API and store the response
     res = requests.post(auth_token_url, data={
         "grant_type":"authorization_code",
         "code":code,
@@ -53,9 +55,10 @@ def spotify_callback():
         "client_secret": CLI_SECRET
         })
 
-    res_body = res.json()
-    access_token = res_body.get("access_token")
+    res_body = res.json() # Convert response to JSON
+    access_token = res_body.get("access_token") # Retrieve access token
     
+    # Append the access token and refresh token to the User
     user_obj = User.query.filter_by(id=int(current_user.id)).first()
     user_obj.spotify_key = access_token
     db.session.commit()
@@ -64,12 +67,17 @@ def spotify_callback():
     return redirect(url_for("home_page"))
 
 def return_formatted_query(user_id, searchQuery, limit=20):
+    """Handles the formatting of a POST query from the player page, returns list of songs"""
+
+    # Here need to retrieve the requesting user's spotify key in order to search
     user_obj = User.query.filter_by(id=int(user_id)).first()
     user_token = user_obj.spotify_key
     spotifyObject = spotipy.Spotify(auth=user_token)
 
+    # Perform the search using SpotiPy interface
     searchResults = spotifyObject.search(searchQuery, limit=limit, offset=0, type="track")
 
+    # Pull all relevant information from the returned JSON objects
     formattedResults = []
     for song, idx in zip(searchResults["tracks"]["items"], range(len(searchResults["tracks"]["items"]))):
         dic = {
@@ -83,6 +91,7 @@ def return_formatted_query(user_id, searchQuery, limit=20):
             }
         formattedResults.append(dic)
 
+    # Return the formatted list of songs
     return formattedResults
 
 def startPlayback(user_id, session_id, song_title, trackURI,):
@@ -98,5 +107,5 @@ def startPlayback(user_id, session_id, song_title, trackURI,):
 def convertTime(ms):
     seconds=int((ms/1000)%60)
     minutes=int((ms/(1000*60))%60)
-
+    
     return (f"{minutes}:{seconds}")
