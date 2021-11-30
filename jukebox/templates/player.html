@@ -126,7 +126,8 @@
 		$(function () {
 			window.setInterval(function () {
 				loadUserList();
-			}, 5000)
+				loadQueueList();
+			}, 1000)
 
 			function loadUserList() {
 				$.ajax({

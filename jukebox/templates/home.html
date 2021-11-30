@@ -12,7 +12,7 @@
 				</a>
 			</li>
 
-			{% if not current_user.spotify %} <!--Will only display if user hasn't added Spotify-->
+			{% if not current_user.spotify_key %} <!--Will only display if user hasn't added Spotify-->
 				<li class="homebuttons"> <!--This would be even better Kian if you can add the spotify emblem in the button-->
 					<a href="{{ url_for('spotify_add') }}">
 						<button class="spotifybutton" type="button">Add Spotify</button>
