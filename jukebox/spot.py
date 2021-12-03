@@ -61,12 +61,33 @@ def spotify_callback():
     # Append the access token and refresh token to the User
     user_obj = User.query.filter_by(id=int(current_user.id)).first()
     user_obj.spotify_key = access_token
+    user_obj.spotify_refresh = code
     db.session.commit()
 
     flash("Spotify added successfully!", category="success")
     return redirect(url_for("home_page"))
 
-def return_formatted_query(user_id, searchQuery, limit=20):
+def refresh_token(user_id):
+    user_obj = User.query.filter_by(id=int(user_id)).first()
+    auth_token_url = f"{API_BASE}/api/token" # Spotify resource URL to retrieve User token
+
+    res = requests.post(auth_token_url, data={
+        "grant_type":"authorization_code",
+        "code":user_obj.spotify_refresh,
+        "redirect_uri":"http://127.0.0.1:9874/spotify-callback/",
+        "client_id": CLI_ID,
+        "client_secret": CLI_SECRET
+        })
+
+    res_body = res.json() # Convert response to JSON
+    access_token = res_body.get("access_token") # Retrieve access token
+    
+    # Append the access token and refresh token to the User
+    user_obj.spotify_key = access_token
+    db.session.commit()
+
+
+def return_formatted_query(user_id, song_title, artist_name=None, limit=20):
     """Handles the formatting of a POST query from the player page, returns list of songs"""
 
     # Here need to retrieve the requesting user's spotify key in order to search
@@ -75,37 +96,45 @@ def return_formatted_query(user_id, searchQuery, limit=20):
     spotifyObject = spotipy.Spotify(auth=user_token)
 
     # Perform the search using SpotiPy interface
-    searchResults = spotifyObject.search(searchQuery, limit=limit, offset=0, type="track")
+    try:
+        if artist_name != None:
+            searchResults = spotifyObject.search(song_title + " " + artist_name, limit=limit, offset=0, type="track,artist")
+        else:
+            searchResults = spotifyObject.search(song_title, limit=limit, offset=0, type="track")
 
-    # Pull all relevant information from the returned JSON objects
-    formattedResults = []
-    for song, idx in zip(searchResults["tracks"]["items"], range(len(searchResults["tracks"]["items"]))):
-        dic = {
-            "id": idx,
-            "title": song["name"],
-            "artist": song["artists"][0]["name"],
-            "album": song["album"]["name"],
-            "length": convertTime(song["duration_ms"]),
-            "album_image_url": song["album"]["images"][2]["url"],
-            "playback_uri":  song["uri"]
-            }
-        formattedResults.append(dic)
+        formattedResults = []
+        for song, idx in zip(searchResults["tracks"]["items"], range(len(searchResults["tracks"]["items"]))):
+            dic = {
+                "id": idx,
+                "title": song["name"],
+                "artist": song["artists"][0]["name"],
+                "album": song["album"]["name"],
+                "length": convertTime(song["duration_ms"]),
+                "album_image_url": song["album"]["images"][2]["url"],
+                "playback_uri":  song["uri"]
+                }
+            formattedResults.append(dic)
 
-    # Return the formatted list of songs
-    return formattedResults
+        # Return the formatted list of songs
+        return formattedResults
+    except spotipy.exceptions.SpotifyException:
+        refresh_token(user_id)
+    
 
 def startPlayback(user_id, session_id, song_title, trackURI,):
-    user_obj = User.query.filter_by(id=int(user_id)).first() # Need to loop through this for all users in session and play
-    user_token = user_obj.spotify_key
-    spotifyObject = spotipy.Spotify(auth=user_token)
 
-    spotifyObject.start_playback(uris=[trackURI])
+    for user_obj in User.query.filter_by(session_id=str(session_id)).all(): # Need to loop through this for all users in session and play
+        user_token = user_obj.spotify_key
+        spotifyObject = spotipy.Spotify(auth=user_token)
+        spotifyObject.start_playback(uris=[trackURI])
 
     return
 
 
 def convertTime(ms):
     seconds=int((ms/1000)%60)
+    if len(str(seconds)) == 1:
+        seconds = str(seconds) + "0"
     minutes=int((ms/(1000*60))%60)
     
     return (f"{minutes}:{seconds}")

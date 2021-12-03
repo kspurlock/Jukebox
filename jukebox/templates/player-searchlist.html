@@ -8,7 +8,7 @@
         <hr class="searchdivider">
         <!--Need to modify this and dynamically update it-->
         {% for song in song_search %}
-        <button class="searchelement" id='{{ song.id }}' playback_uri='{{ song.playback_uri }}' title='{{ song.title }}' onclick='songSelected()'>
+        <button class="searchelement" id='{{ song.id }}' playback_uri='{{ song.playback_uri }}' title='{{ song.title }}' artist= '{{ song.artist }}' onclick='songSelected()'>
             <li class="songs searchgrid">
                 <ul class="titleartist">
                     <img class="queueimage" src="{{ song.album_image_url }}" alt="../static/images/jukeplaceholder.svg">

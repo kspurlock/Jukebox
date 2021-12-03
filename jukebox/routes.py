@@ -8,6 +8,7 @@ from flask import (
     request,
     jsonify,
     abort,
+    session
 )
 from jukebox.forms import RegisterForm, LoginForm, JoinSessionForm
 from jukebox.models import User, Session, Song
@@ -284,30 +285,34 @@ def add_song(session_id):
     """Note: can just search again for a single query with the track URI"""
     #song_id = request.values.get("songID")
     song_title = request.values.get("songTitle")
+    song_artist = request.values.get("songArtist")
     sent_user = request.values.get("sentUser")
     user_obj = User.query.filter_by(id=int(sent_user)).first()
     song_playback = request.values.get("songPlayback")
 
     startPlayback(sent_user, session_id, song_title, song_playback)
 
-    searchResult = return_formatted_query(current_user.id, song_title, limit=1)[0] # Likely a more efficient way to do this than re-searching
+    searchResult = return_formatted_query(current_user.id, song_title, song_artist, limit=1)[0] # Likely a more efficient way to do this than re-searching
 
-    song_to_create = Song(title=searchResult["title"],
-    artist=searchResult["artist"],
-    album=searchResult["album"],
-    queued_by=user_obj.username,
-    length=searchResult["length"],
-    album_image_url=searchResult["album_image_url"],
-    playback_uri=searchResult["playback_uri"],
-    session_id=str(session_id)
-    )
+    try:
+        song_to_create = Song(title=searchResult["title"],
+        artist=searchResult["artist"],
+        album=searchResult["album"],
+        queued_by=user_obj.username,
+        length=searchResult["length"],
+        album_image_url=searchResult["album_image_url"],
+        playback_uri=searchResult["playback_uri"],
+        session_id=str(session_id)
+        )
+        db.session.add(song_to_create)
+        db.session.commit()
 
-    db.session.add(song_to_create)
-    db.session.commit()
+    except IntegrityError:
+        return jsonify("")
 
     song_list = Song.query.filter_by(session_id=str(session_id)).all()
 
-    return jsonify("", render_template("player-queuelist.html", queue=song_list))
+    return jsonify("", render_template("player-queuelist.html", queue=song_list), render_template("player-bottombar.html", song=song_to_create))
 
 
 @app.errorhandler(404)

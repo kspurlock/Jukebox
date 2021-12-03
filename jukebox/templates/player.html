@@ -99,12 +99,8 @@
 		<!-- Start bottom bar elements -->
 		<div class="bottombar">
 			<ul class="nowplaying">
-				<li class="songsnp">
-					<span class="npimagespan"><img class="npimage" src="../static/images/jukeplaceholder.svg"></span>
-					{% for song in queue %}
-					<span class="nptitle">{{ song.title }}</span>
-					<span class="npartist">{{ song.artist }}</span>
-					{% endfor %}
+				<li class="songsnp" id="current-info">
+					<span class="nptitle">Search for a song in the upper right!</span>
 				</li>
 				<li class="controls">
 					<a class="linktext" href="#">
@@ -118,7 +114,6 @@
 		</div>
 	</div>
 
-	<!--<script src="{{url_for('static', filename='script.js')}}"></script>-->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script>
 		let session_name = document.getElementById("createsession").innerHTML.toString();
@@ -154,17 +149,7 @@
 				});
 			}; //end loadQueueList
 
-			function loadBottomBar() {
-				$.ajax({
-				url: $SCRIPT_ROOT + "/player/" + session_name + "/update-queuelist",
-				type: "POST",
-				dataType: "json",
-				success: function (data) {
-					$("#nptitle").replaceWith(data.songTitle)
-					$("#npartist").replaceWith(data.songArtist)
-				}
-				});
-			}; //end loadQueueList
+
 		}); //end function
 
 		function searchSong() {
@@ -178,7 +163,7 @@
 					}
 				})
 					.done(function (data) {
-						$("#search-div").replaceWith(data[1])
+						$("#search-div").replaceWith(data[1]);
 					}); //end done
 				event.preventDefault();
 			}); //end on
@@ -193,13 +178,14 @@
 					data: {
 						songID: $(this).attr("id"),
 						songTitle: $(this).attr("title"),
+						songArtist: $(this).attr("artist"),
 						songPlayback: $(this).attr("playback_uri"),
 						sentUser: user
 					},
 				})
 					.done(function (data) {
 						$("#queuelist-div").replaceWith(data[1])
-						
+						$("#current-info").replaceWith(data[2]);
 						//loadQueueList();
 					}); //end done
 					
