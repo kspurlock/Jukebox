@@ -101,8 +101,10 @@
 			<ul class="nowplaying">
 				<li class="songsnp">
 					<span class="npimagespan"><img class="npimage" src="../static/images/jukeplaceholder.svg"></span>
-					<span class="nptitle">Song Title</span>
-					<span class="npartist">Song Artist</span>
+					{% for song in queue %}
+					<span class="nptitle">{{ song.title }}</span>
+					<span class="npartist">{{ song.artist }}</span>
+					{% endfor %}
 				</li>
 				<li class="controls">
 					<a class="linktext" href="#">
@@ -121,13 +123,14 @@
 	<script>
 		let session_name = document.getElementById("createsession").innerHTML.toString();
 		let user = document.getElementById("currentuser").innerHTML.toString();
+		const vetoButton = document.querySelector('.queuenumber');
 
 		$SCRIPT_ROOT = {{ request.script_root | tojson | safe }}; //This is not an error
 		$(function () {
 			window.setInterval(function () {
 				loadUserList();
 				loadQueueList();
-			}, 1000)
+			}, 3000)
 
 			function loadUserList() {
 				$.ajax({
@@ -147,6 +150,18 @@
 				dataType: "json",
 				success: function (data) {
 					$("#queuelist-div").replaceWith(data[1]);
+				}
+				});
+			}; //end loadQueueList
+
+			function loadBottomBar() {
+				$.ajax({
+				url: $SCRIPT_ROOT + "/player/" + session_name + "/update-queuelist",
+				type: "POST",
+				dataType: "json",
+				success: function (data) {
+					$("#nptitle").replaceWith(data.songTitle)
+					$("#npartist").replaceWith(data.songArtist)
 				}
 				});
 			}; //end loadQueueList
@@ -184,6 +199,7 @@
 				})
 					.done(function (data) {
 						$("#queuelist-div").replaceWith(data[1])
+						
 						//loadQueueList();
 					}); //end done
 					

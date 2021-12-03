@@ -2,7 +2,6 @@
 
 
 const vetoButton = document.querySelector('.queuenumber');
-const vetoCounter = document.getElementById('vetototal');
 const removeSong = document.getElementById('song1');
 const createSession = document.getElementById('createsession');
 const queueList = document.getElementById('queuelist');
